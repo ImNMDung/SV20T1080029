@@ -1,0 +1,34 @@
+﻿@model HomeIndexModel
+@{
+    ViewData["Title"] = "Home Page";
+    // C1
+    // string titleMessage = Convert.ToString(ViewData["LitleMessage"]);
+    // List<Person> listOfPerson = ViewData["ListOfPerson"] as List<Person>;\
+}
+
+@* <h1>@Model.TitleMessage</h1>
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr class="table table-danger">
+            <th> PersonID</th>
+            <th> Name </th>
+            <th> Address</th>
+            <th> Email</th>
+        </tr>
+    </thead>
+    <tbody>
+     
+        @foreach(var item in Model.ListOfPersons)
+        {
+            <tr>
+                <td>@item?.PersonId</td>
+                <td>@item?.Name</td>
+                <td>@item?.Address</td>
+                <td>@item?.Email</td>
+            </tr>
+        }
+    </tbody>
+</table>
+ *@

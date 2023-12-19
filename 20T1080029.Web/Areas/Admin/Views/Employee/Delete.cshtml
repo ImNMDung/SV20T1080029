@@ -1,0 +1,185 @@
+﻿@* @{
+}
+<div class="box box-primary">
+    <form accion="">
+
+
+        <div class="box-body">
+            <!-- Date dd/mm/yyyy -->
+            <div class="form-group">
+                <label>Họ và tên:</label>
+
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-plus"></i>
+                    </div>
+                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="" placeholder="Nhập loại hàng...">
+                </div>
+                <!-- /.input group -->
+            </div>
+            <!-- /.form group -->
+            <!-- /.form group -->
+            <!-- phone mask -->
+            <div class="form-group">
+                <label>Ngày sinh:</label>
+
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-plus"></i>
+                    </div>
+                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="" placeholder="Nhập loại hàng...">
+                </div>
+                <!-- /.input group -->
+            </div>
+
+            <div class="form-group">
+                <label>Địa chỉ:</label>
+
+                <div class="input-group">
+                    <div class="input-group-addon">
+                    </div>
+                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="" placeholder="Nhập loại hàng...">
+                </div>
+                <!-- /.input group -->
+            </div>
+
+            <div class="form-group">
+                <label>Điện thoại:</label>
+
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-plus"></i>
+                    </div>
+                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="" placeholder="Nhập loại hàng...">
+                </div>
+                <!-- /.input group -->
+            </div>
+
+            <div class="form-group">
+                <label>Email:</label>
+
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-plus"></i>
+                    </div>
+                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="" placeholder="Nhập loại hàng...">
+                </div>
+                <!-- /.input group -->
+            </div>
+
+            <div class="form-group">
+                <label>Trạng thái:</label>
+
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-plus"></i>
+                    </div>
+                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="" placeholder="Nhập loại hàng...">
+                </div>
+                <!-- /.input group -->
+            </div>
+
+            <div class="form-group">
+                <label>Ảnh cá nhân:</label>
+
+                <img class="img-responsive" style="height:120px;width:100px;" src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80" alt="Photo">
+
+                <!-- /.input group -->
+            </div>
+            <!-- /.form group -->
+            <div class="form-group">
+            <button type="submit" class="btn btn-info">
+                Đổi mật khẩu 
+                    <!-- /.input group -->
+                
+            </button>
+
+            <a href="~/Admin/Employee" class="btn btn-info">  Quay Lại</a>
+            </div>
+        </div>
+    </form>
+
+</div> *@
+
+@model SV20T1080029.DomainModels.Employee
+@{
+    ViewBag.Title = "Xóa nhân viên";
+}
+
+<div class="box box-danger">
+    <div class=" box-body">
+        <form action="~/Admin/Employee/Delete/@Model.EmployeeId" method="post">
+            <div class="form-group">
+                <label class="control-label col-sm-2">Tên nhân viên:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">@Model.FullName</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Ngày sinh:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">@Model.BirthDate</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Địa chỉ:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">@Model.Address</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Số điện thoại:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">@Model.Phone</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Email:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">@Model.Email</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Trạng Thái:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        @if (Model.IsWorking)
+                        {
+                        <p class="form-control-static">Còn làm </p>
+                        }
+                        else
+                        {
+                        <p class="form-control-static">Đã nghỉ</p>
+                        }
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="">Ảnh cá nhân:</label>
+                <div class="col-sm-10">
+                    <img src="~/images/employee/user.png" class="card-img-top" alt="..." width="80" height="100">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa fa-fw fa-times"></i>
+                        Xóa dữ liệu
+                    </button>
+                    <a href="~/Admin/Employee" class="btn btn-default">
+                        <i class="fa fa-fw fa-arrow-left"></i>
+                        Quay lại
+                    </a>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>

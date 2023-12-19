@@ -1,0 +1,223 @@
+﻿@model SV20T1080029.Web.Models.PaginationSearchCustomer
+
+@{
+    Layout = null;
+}
+<p style="padding:10px ; background-color:#fff; margin:0px">
+    Có <strong>@string.Format("{0:N0}" , Model.RowCount)</strong> khách hàng. Hiện đang ở trang <strong>@Model.Page</strong> trên tổng số <strong>@Model.PageCount</strong> trang
+</p>
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+
+    <div id="successAlert" class="box-body">
+        <div class="alert alert-warning" style=" margin-bottom: 0px">
+            <div class="row">
+                <div class="col-sm-11">
+                    @ViewBag.ErrorMessage
+                </div>
+
+                <div class="col-sm-1">
+                    <button type="button" class="close" onclick="closeAlert()" style="color:white "><i class="glyphicon glyphicon-remove"></i></button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+    <div id="successAlert" class="box-body">
+        <div class="alert alert-success" style=" margin-bottom: 0px">
+            <div class="row">
+                <div class="col-sm-11">
+                    @ViewBag.SuccessMessage
+                </div>
+
+                <div class="col-sm-1">
+                    <button type="button" class="close" onclick="closeAlert()" style="color:white ">×</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.AddSuccessMessage))
+{
+    <div id="successAlert" class="box-body">
+        <div class="alert alert-success" style=" margin-bottom: 0px">
+            <div class="row">
+                <div class="col-sm-11">
+                    @ViewBag.AddSuccessMessage
+                </div>
+
+                <div class="col-sm-1">
+                    <button type="button" class="close" onclick="closeAlert()" style="color:white ">×</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+}
+
+
+
+<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+    <div class="row ">
+        <div class="col-sm-6">
+            <div class="dataTables_length" id="example1_length">
+                <label>
+                    Hiển thị
+                    <select id="PageSize" name="PageSize" aria-controls="example1" class="form-control input-sm">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+
+
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select> dòng
+
+                </label>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div id="example1_filter" class="dataTables_filter">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+                <thead>
+                    <tr role="row" class="bg-primary">
+
+                        <th>Tên khách hàng</th>
+                        <th>Tên giao dịch</th>
+                        <th>Tỉnh</th>
+                        <th>Địa chỉ</th>
+                        <th>Điện thoại</th>
+                        <th>Email</th>
+                        <th style=" text-align:center ">Công cụ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Data != null)
+                    {
+                        @foreach (var item in Model.Data)
+                        {
+                            <tr role="row" class="odd">
+                                <td class="sorting_1">@item.CustomerName</td>
+                                <td>@item.ContactName</td>
+                                <td>@item.Province</td>
+                                <td>@item.Address</td>
+                                <td>@item.Phone</td>
+
+                                <td>@item.Email</td>
+
+
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="" style="width: 182.219px;  text-align:center ">
+
+
+
+                                    <a href="~/Admin/Customer/Edit/@item.CustomerID" class="btn btn-xs btn-info" title="Sửa khách hàng">
+                                        <i class="fa fa-edit"> </i>
+                                    </a>
+                                    <a href="~/Admin/Customer/Changepass/@item.CustomerID" class="btn btn-xs btn-info" title="Đổi mật khẩu">
+                                        <i class="fa fa-key"></i>
+                                    </a>
+                                    <a href="~/Admin/Customer/Delete/@item.CustomerID" class="btn btn-xs btn-danger" title="Xoá khách hàng">
+                                        <i class="fa fa-remove"></i>
+                                    </a>
+
+
+
+                                </th>
+                            </tr>
+                        }
+
+                    }
+
+
+
+
+
+
+
+                </tbody>
+                <tfoot>
+                    @*      <tr><th rowspan="1" colspan="1"> SupperlierID </th><th rowspan="1" colspan="1">SupperlierName</th><th rowspan="1" colspan="1">Platform(s)</th><th rowspan="1" colspan="1">Engine version</th><th rowspan="1" colspan="1">CSS grade</th></tr>
+                    *@
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    </div>
+    <div class="text-center">
+
+
+
+        <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+
+
+            <ul class="pagination">
+                @if (Model.Page > 1)
+                {
+                    <li class="paginate_button previous" id="example2_previous">
+                        <a href="~/Admin/Customer?page=@(Model.Page - 1)&searchValue=@Model.SearchValue" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
+                    </li>
+                }
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    if (i == Model.Page)
+                    {
+                        <li class="paginate_button active">
+                            <a href="#" aria-controls="example2" data-dt-idx="@i" tabindex="0">@i</a>
+                        </li>
+                    }
+                    else if (i <= 4 || i > Model.PageCount - 4 || (i >= Model.Page - 2 && i <= Model.Page + 2))
+                    {
+                        <li class="page_link">
+                            <a href="javascript:;" onclick="doSearch(@i)" aria-controls="example2" data-dt-idx="" tabindex="@i">@i</a>
+                        </li>
+                    }
+                    else if (i == Model.Page - 4 || i == Model.Page + 4)
+                    {
+                        <li class="paginate_button">
+                            <a href="#" aria-controls="example2" data-dt-idx="" tabindex="0">...</a>
+                        </li>
+                    }
+                }
+                @if (Model.Page < Model.PageCount)
+                {
+                    <li class="paginate_button next" id="example2_next">
+                        <a href="~/Admin/Customer?page=@(Model.Page + 1)&searchValue=@Model.SearchValue" aria-controls="example2" data-dt-idx="" tabindex="0">Next</a>
+                    </li>
+                }
+            </ul>
+
+
+        </div>
+    </div>
+
+    <script>
+        // Tự động đóng thông báo sau 5 giây
+        setTimeout(function () {
+            closeAlert();
+        }, 5000); // 5 giây
+
+        function closeAlert() {
+            var successAlert = document.getElementById("successAlert");
+            successAlert.style.opacity = "0";
+            successAlert.style.transition = "opacity 1s ease-out";
+
+            setTimeout(function () {
+                successAlert.style.display = "none";
+            }, 1000); // 1 giây (thời gian cho hiệu ứng fade out)
+        }
+
+
+    </script>

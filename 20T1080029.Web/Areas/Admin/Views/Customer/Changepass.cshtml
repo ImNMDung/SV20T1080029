@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "Xoá khách hàng";
+}
+
+<style>
+    .box-body {
+        padding-left: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .label-value {
+        font-weight: bold;
+        display: inline-block;
+        width: 150px;
+    }
+
+    .btn-container {
+        margin-top: 20px;
+    }
+</style>
+
+<div class="box box-primary ">
+    <div class="box-body">
+        <form action="#">
+            <!-- Tên nhà cung cấp -->
+            <div class="form-group">
+                <span class="label-value">CustomerName:</span>
+                <span class="form-control-static">Nhà Hàng DS</span>
+            </div>
+
+            <!-- Tên giao dịch -->
+            <div class="form-group">
+                <span class="label-value">ContactName:</span>
+                <span class="form-control-static">Bán Áo Quần</span>
+            </div>
+
+            <!-- Địa chỉ -->
+            <div class="form-group">
+                <span class="label-value">Province:</span>
+                <span class="form-control-static">Hải Phòng</span>
+            </div>
+
+            <!-- Tỉnh thành -->
+            <div class="form-group">
+                <span class="label-value">Address:</span>
+                <span class="form-control-static">Hải Phòng</span>
+            </div>
+
+            <!-- Điện thoại -->
+            <div class="form-group">
+                <span class="label-value">Phone:</span>
+                <span class="form-control-static">439822232</span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <span class="label-value">Email:</span>
+                <span class="form-control-static">2323@gmail.com</span>
+            </div>
+
+            <div class="form-group">
+                <span class="label-value">Password:</span>
+                <span class="form-control-static">2323@gmail.com</span>
+            </div>
+            <div class="form-group">
+                <span class="label-value">IsLocked:</span>
+                <span class="form-control-static">2323@gmail.com</span>
+            </div>
+            <!-- Buttons -->
+            <div class="btn-container">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-remove"></i>
+                    Xoá nhà cung cấp
+                </button>
+
+                <a style="margin-right: 20px;" href='~/Admin/Supplier' class="btn btn-info">Quay Lại</a>
+            </div>
+
+        </form>
+    </div>
+</div>
