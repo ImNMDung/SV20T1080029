@@ -17,7 +17,7 @@
 
     <div class="box-body">
         <form class="form-horizontal" method="post" action="~/Admin/Product/Save" enctype="multipart/form-data">
-            @Html.HiddenFor(m => m.product.ProductID)
+            @Html.HiddenFor(m => m.product.ProductId)
             <div class="form-group">
                 <label class="control-label col-sm-2">Tên mặt hàng:</label>
                 <div class="col-sm-10">
@@ -36,8 +36,8 @@
                 <label class="control-label col-sm-2">Loại hàng:</label>
                 <div class="col-sm-10">
 
-                    @Html.DropDownListFor(m => m.product.CategoryID,SelectListHelper.Category(),new {@class="form-control"})
-                    @Html.ValidationMessageFor(m => m.product.CategoryID,"*" ,new {@style="color:#f00"})
+                    @Html.DropDownListFor(m => m.product.CategoryId,SelectListHelper.Category(),new {@class="form-control"})
+                    @Html.ValidationMessageFor(m => m.product.CategoryId,"*" ,new {@style="color:#f00"})
 
                 </div>
             </div>
@@ -46,8 +46,8 @@
                 <label class="control-label col-sm-2">Nhà cung cấp:</label>
                 <div class="col-sm-10">
 
-                    @Html.DropDownListFor(m => m.product.SupplierID,SelectListHelper.Supplier(),new {@class="form-control"})
-                    @Html.ValidationMessageFor(m => m.product.SupplierID,"*" ,new {@style="color:#f00"})
+                    @Html.DropDownListFor(m => m.product.SupplierId,SelectListHelper.Supplier(),new {@class="form-control"})
+                    @Html.ValidationMessageFor(m => m.product.SupplierId,"*" ,new {@style="color:#f00"})
 
                 </div>
             </div>
@@ -71,7 +71,7 @@
             <div class="form-group">
                 <div class="col-lg-offset-2 col-sm-10">
                     <div class="checkbox">
-                        @*    @Html.CheckBoxFor(m => m.Isworkings)  *@
+                            @Html.CheckBoxFor(m => m.product.IsSelling)  
                         Hiện đang được bán
                     </div>
                 </div>
@@ -121,38 +121,40 @@
     <div class="box-body">
         <table class="table table-bordered table-hover table-striped">
             <thead>
+              
                 <tr class="bg-gray">
                     <th>Ảnh</th>
                     <th>Mô tả/tiêu đề</th>
                     <th>Thứ tự hiển thị</th>
                     <th>Ẩn ảnh</th>
                     <th class="text-right">
-                        <a class="btn btn-xs btn-primary" href="~/Admin/Product/Photo/@Model.product.ProductID?method=add">
+                        <a class="btn btn-xs btn-primary" href="~/Admin/Product/Photo/@Model.product.ProductId?method=add">
                             <i class="fa fa-plus"></i>
                         </a>
                     </th>
                 </tr>
             </thead>
             <tbody>
-               @foreach (var photo in Model.ProductPhotos)
-    {
+                @foreach (var photo in Model.productPhotos)
+                {
+                    <input type="hidden" id="hiddenProductId" name="hiddenProductId" value="@photo.ProductId">
                     <tr>
                         <td style="vertical-align:middle">
-                            <img src="~/Images/Products/@photo.PhotoID" alt="" style="width:100px" />
+                            <img src="~/Images/Products/@photo.PhotoId" alt="" style="width:100px" />
                         </td>
                         <td style="vertical-align:middle;">
-                            @photo.PhotoID
+                            @photo.PhotoId
                         </td>
-                       @*  <td style="vertical-align:middle;">@Model.productPhoto.DisplayOrder</td>
+                        <td style="vertical-align:middle;">@photo.DisplayOrder</td>
                         <td style="vertical-align:middle;"></td>
                         <td style="vertical-align:middle; text-align:right">
-                            <a class="btn btn-xs btn-primary" href="~/Admin/Product/Photo/@Model.productPhoto.ProductID?method=edit&photoId=456">
+                            <a class="btn btn-xs btn-primary" href="~/Admin/Product/Photo/@photo.ProductId?method=edit&photoId=@photo.PhotoId">
                                 <i class="fa fa-edit"></i>
                             </a>
-                        <a class="btn btn-xs btn-danger" href="~/Admin/Product/Photo/@Model.productPhoto.ProductID?method=delete&photoId=456" onclick="return confirm('Xóa ảnh của mặt hàng hay không?')">
+                            <a class="btn btn-xs btn-danger" href="~/Admin/Product/Photo/@photo.ProductId?method=delete&photoId=@photo.PhotoId" onclick="return confirm('Xóa ảnh của mặt hàng hay không?')">
                                 <i class="fa fa-remove"></i>
                             </a>
-                        </td> *@
+                        </td>
                     </tr>
               }
             </tbody>
@@ -187,12 +189,13 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 1; i <= 5; i++)
+                @foreach (var item in Model.productAttributes)
                 {
+                    <input type="hidden" id="hiddenProductId" name="hiddenProductId" value="@item.ProductId">
                     <tr>
-                        <td style="vertical-align:middle">CPU</td>
-                        <td style="vertical-align:middle;">Intel Core i5 3337U 1.8GHz</td>
-                        <td style="vertical-align:middle;">1</td>
+                        <td style="vertical-align:middle">@item.AttributeName</td>
+                        <td style="vertical-align:middle;">@item.AttributeValue</td>
+                        <td style="vertical-align:middle;">@item.DisplayOrder</td>
                         <td style="vertical-align:middle; text-align:right">
                             <a class="btn btn-xs btn-primary" href="~/Admin/Product/Attribute/123?method=edit&attributeId=456">
                                 <i class="fa fa-edit"></i>
@@ -209,4 +212,4 @@
     <div class="box-footer text-center">
     </div>
 
-</div>
+</div> 

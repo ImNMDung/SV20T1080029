@@ -33,43 +33,47 @@ namespace SV20T1080029.BusinessLayers
         }
 
 
+      
         /// <summary>
         /// Tìm kiếm và lấy danh sách mặt hàng (không phân trang)
         /// </summary>
-        /// <param name="searchValue">Tên mặt hàng cần tìm (chuỗi rỗng nếu không tìm kiếm)</param>
-        /// <param name="categoryID">Mã loại hàng cần tìm (chuỗi rỗng nếu không tìm kiếm theo loại hàng)</param>
-        /// <param name="supplierID">Mã nhà cung cấp cần tìm (chuỗi rỗng nếu không tìm kiếm theo nhà cung cấp)</param>
+        /// <param name="searchValue">Tên mặt hàng cần tìm (chuỗi rỗng nếu không tìm kiếm)</param>        
         /// <returns></returns>
-        public static List<Product> ListProducts(string searchValue = "", int categoryID = 0, int supplierID = 0)
+        public static List<Product> ListProducts(string searchValue = "")
         {
-            return productDB.List(1, 0, searchValue, categoryID, supplierID).ToList();
+            return productDB.List(1, 0, searchValue, 0, 0, 0, 0).ToList();
         }
+ 
         /// <summary>
         /// Tìm kiếm và lấy danh sách mặt hàng dưới dạng phân trang
         /// </summary>
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <param name="searchValue"></param>
-        /// <param name="categoryID"></param>
-        /// <param name="supplierID"></param>
+        /// <param name="categoryId"></param>
+        /// <param name="supplierId"></param>
+        /// <param name="minPrice"></param>
+        /// <param name="maxPrice"></param>
         /// <param name="rowCount"></param>
         /// <returns></returns>
-        public static List<Product> ListProducts(int page, int pageSize, string searchValue, int categoryID, int supplierID, out int rowCount)
+        public static List<Product> ListProducts(int page, int pageSize, string searchValue, int categoryId, int supplierId, decimal minPrice, decimal maxPrice, out int rowCount)
         {
-            rowCount = productDB.Count(searchValue, categoryID, supplierID);
-            return productDB.List(page, pageSize, searchValue, categoryID, supplierID).ToList();
+            rowCount = productDB.Count(searchValue, categoryId, supplierId, minPrice, maxPrice);
+            return productDB.List(page, pageSize, searchValue, categoryId, supplierId, minPrice, maxPrice).ToList();
         }
+
         /// <summary>
-        /// Lấy thông tin mặt hàng theo mã hàng
+        /// Lấy thông tin 1 mặt hàng theo mã mặt hàng
         /// </summary>
         /// <param name="productID"></param>
         /// <returns></returns>
-        public static Product GetProduct(int productID)
+        public static Product? GetProduct(int productID)
         {
             return productDB.Get(productID);
         }
+
         /// <summary>
-        /// Thêm một mặt hàng
+        /// 
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -78,7 +82,7 @@ namespace SV20T1080029.BusinessLayers
             return productDB.Add(data);
         }
         /// <summary>
-        /// Cập nhật thông tin mặt hàng
+        /// 
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -87,7 +91,7 @@ namespace SV20T1080029.BusinessLayers
             return productDB.Update(data);
         }
         /// <summary>
-        /// Xoá một mặt hàng
+        /// 
         /// </summary>
         /// <param name="productID"></param>
         /// <returns></returns>
@@ -96,7 +100,7 @@ namespace SV20T1080029.BusinessLayers
             return productDB.Delete(productID);
         }
         /// <summary>
-        /// Kiểm tra mã mặt hàng có tồn tại trong các quan hệ
+        /// 
         /// </summary>
         /// <param name="productID"></param>
         /// <returns></returns>
@@ -107,7 +111,7 @@ namespace SV20T1080029.BusinessLayers
 
 
         /// <summary>
-        /// Hiển thị danh sách ảnh của mặt hàng
+        /// 
         /// </summary>
         /// <param name="productID"></param>
         /// <returns></returns>
@@ -115,17 +119,19 @@ namespace SV20T1080029.BusinessLayers
         {
             return productDB.ListPhotos(productID).ToList();
         }
+
         /// <summary>
-        /// Lấy thông tin của ảnh mặt hàng theo mã
+        /// 
         /// </summary>
         /// <param name="photoID"></param>
         /// <returns></returns>
-        public static ProductPhoto GetPhoto(long photoID)
+        public static ProductPhoto? GetPhoto(long photoID)
         {
             return productDB.GetPhoto(photoID);
         }
+
         /// <summary>
-        /// Thêm ảnh của mặt hàng
+        /// 
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -133,8 +139,9 @@ namespace SV20T1080029.BusinessLayers
         {
             return productDB.AddPhoto(data);
         }
+
         /// <summary>
-        /// Cập nhật thông tin ảnh của mặt hàng
+        /// 
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -142,8 +149,9 @@ namespace SV20T1080029.BusinessLayers
         {
             return productDB.UpdatePhoto(data);
         }
+
         /// <summary>
-        /// Xoá ảnh của mặt hàng
+        /// 
         /// </summary>
         /// <param name="photoID"></param>
         /// <returns></returns>
@@ -152,9 +160,8 @@ namespace SV20T1080029.BusinessLayers
             return productDB.DeletePhoto(photoID);
         }
 
-
         /// <summary>
-        /// Hiển thị danh sách thuộc tính của mặt hàng
+        /// 
         /// </summary>
         /// <param name="productID"></param>
         /// <returns></returns>
@@ -162,17 +169,18 @@ namespace SV20T1080029.BusinessLayers
         {
             return productDB.ListAttributes(productID).ToList();
         }
+
         /// <summary>
-        /// Lấy thông tin thuộc tính của mặt hàng
+        /// 
         /// </summary>
         /// <param name="attributeID"></param>
         /// <returns></returns>
-        public static ProductAttribute GetAttribute(int attributeID)
+        public static ProductAttribute? GetAttribute(int attributeID)
         {
             return productDB.GetAttribute(attributeID);
         }
         /// <summary>
-        /// Thêm thuộc tính mặt hàng
+        /// 
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -180,8 +188,9 @@ namespace SV20T1080029.BusinessLayers
         {
             return productDB.AddAttribute(data);
         }
+
         /// <summary>
-        /// Cập nhật thông tin thuộc tính của mặt hàng
+        /// 
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -189,14 +198,15 @@ namespace SV20T1080029.BusinessLayers
         {
             return productDB.UpdateAttribute(data);
         }
+
         /// <summary>
-        /// Xoá thông tin thuộc tính của mặt hàng
+        /// 
         /// </summary>
         /// <param name="attributeID"></param>
         /// <returns></returns>
         public static bool DeleteAttribute(long attributeID)
         {
             return productDB.DeleteAttribute(attributeID);
-        }
+        }    
     }
 }

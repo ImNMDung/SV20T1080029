@@ -1,4 +1,5 @@
-﻿@*
+﻿@using SV20T1080029.Web;
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -23,37 +24,40 @@
 
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-               
-                <!-- User Account: style can be found in dropdown.less -->
-                <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="~/images/admin.jpg" class="user-image" alt="User Image">
-                        <span class="hidden-xs">Nguyễn Mạnh Dũng</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <!-- User image -->
-                        <li class="user-header">
-                            <img src="~/images/admin.jpg" class="img-circle" alt="User Image">
+                @{
+                    var userData = User.GetUserData();
+                    if (userData != null)
+                    {
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="~/images/employees/@userData.Photo" class="user-image" alt="User Image">
+                                <span class="hidden-xs">@userData.DisplayName</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="~/images/Employees/@userData.Photo" class="img-circle" alt="User Image">
 
-                            <p>
-                                Nguyễn Mạnh Dũng 
-                            </p>
+                                    <p>
+                                        @userData.DisplayName
+
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="~/Account/ChangePassword" class="btn btn-default btn-flat">Đổi Mật Khẩu</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="~/Account/Logout" class="btn btn-default btn-flat">Đăng Xuất</a>
+                                    </div>
+                                </li>
+                            </ul>
                         </li>
-                        <!-- Menu Body -->
-                     
-                        <!-- Menu Footer-->
-                        <li class="user-footer">
-                            <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Đổi Mật Khẩu</a>
-                            </div>
-                            <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Chim Cút</a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                <!-- Control Sidebar Toggle Button -->
-               
+                        <!-- Control Sidebar Toggle Button -->
+                    }
+                }
             </ul>
         </div>
     </nav>

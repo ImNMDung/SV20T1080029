@@ -40,10 +40,10 @@ namespace SV20T1080029.DataLayers.SQLServer
                                 end";
                 var parameters = new
                 {
-                    Productid = data.ProductID,
+                    Productid = data.ProductId,
                     ProductName = data.ProductName ?? "",
-                    CategoryID = data.CategoryID,
-                    SupplierID =data.SupplierID ,
+                    CategoryID = data.CategoryId,
+                    SupplierID =data.SupplierId ,
                     Unit = data.Unit ,
                     Price = data.Price,
                     Photo = data.Photo ?? "",
@@ -65,7 +65,7 @@ namespace SV20T1080029.DataLayers.SQLServer
                                     SELECT SCOPE_IDENTITY()";
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = conn;
-                cmd.Parameters.AddWithValue("@ProductID", data.ProductID);
+                cmd.Parameters.AddWithValue("@ProductID", data.ProductId);
                 cmd.Parameters.AddWithValue("@AttributeName", data.AttributeName);
                 cmd.Parameters.AddWithValue("@AttributeValue", data.AttributeValue);
                 cmd.Parameters.AddWithValue("@DisplayOrder", data.DisplayOrder);
@@ -77,26 +77,29 @@ namespace SV20T1080029.DataLayers.SQLServer
         }
         public long AddPhoto(ProductPhoto data)
         {
-            int result = 0;
-            using (SqlConnection conn = OpenConnection())
+            int id = 0;
+            using (var connection = OpenConnection())
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = @"INSERT INTO ProductPhotos(PhotoID, ProductID, Photo, Description, DisplayOrder, IsHidden)
-                                    VALUES(@PhotoID, @ProductID, @Photo, @Description, @DisplayOrder, @IsHidden);
-                                    SELECT SCOPE_IDENTITY()";
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = conn;
-                cmd.Parameters.AddWithValue("@PhotoID", data.PhotoID);
-                cmd.Parameters.AddWithValue("@ProductID", data.ProductID);
-                cmd.Parameters.AddWithValue("@Photo", data.Photo);
-                cmd.Parameters.AddWithValue("@Description", data.Description);
-                cmd.Parameters.AddWithValue("@DisplayOrder", data.DisplayOrder);
-                cmd.Parameters.AddWithValue("@IsHidden", data.IsHidden);
 
-                result = Convert.ToInt32(cmd.ExecuteScalar());
-                conn.Close();
+                var sql = @"INSERT INTO ProductPhotos( ProductID, Photo, Description, DisplayOrder, IsHidden)
+                                    VALUES( @ProductID, @Photo, @Description, @DisplayOrder, @IsHidden);
+                                    SELECT SCOPE_IDENTITY()";
+              
+                var parameters = new
+                {
+                
+                    ProductId = data.ProductId ,
+                    Photo = data.Photo,
+                    Description = data.Description,
+                    DisplayOrder = data.DisplayOrder,
+                    IsHidden = data.IsHidden,
+                    
+
+                };
+                id = connection.ExecuteScalar<int>(sql: sql, param: parameters, commandType: CommandType.Text);
+                connection.Close();
             };
-            return result;
+            return id;
         }
         /// <summary>
         /// Đếm số lượng của mặt hàng dựa theo tìm kiếm tên mặt hàng,
@@ -131,6 +134,12 @@ namespace SV20T1080029.DataLayers.SQLServer
             }
             return count;
         }
+
+        public int Count(string searchValue = "", int categoryID = 0, int supplierID = 0, decimal minPrice = 0, decimal maxPrice = 0)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Xoá một mặt hàng dựa theo mã mặt hàng
         /// </summary>
@@ -188,94 +197,49 @@ namespace SV20T1080029.DataLayers.SQLServer
         /// <param name="productID"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Product Get(int productID)
+        public Product? Get(int id)
         {
-            Product data = null;
-            using (SqlConnection conn = OpenConnection())
+            Product? data = null;
+            using (var connection = OpenConnection())
             {
-                SqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = @"SELECT * FROM Products WHERE ProductID = @ProductID";
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = conn;
-                cmd.Parameters.AddWithValue("@ProductID", productID);
-                var dbReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                if (dbReader.Read())
-                {
-                    data = new Product()
-                    {
-                        ProductID = Convert.ToInt32(dbReader["ProductID"]),
-                        ProductName = Convert.ToString(dbReader["ProductName"]),
-                        SupplierID = Convert.ToInt32(dbReader["SupplierID"]),
-                        CategoryID = Convert.ToInt32(dbReader["CategoryID"]),
-                        Unit = Convert.ToString(dbReader["Unit"]),
-                        Price = Convert.ToInt32(dbReader["Price"]),
-                        Photo = Convert.ToString(dbReader["Photo"])
-                    };
-                }
-                dbReader.Close();
-                conn.Close();
-            };
-
+                var sql = "SELECT * FROM Products WHERE ProductId = @productId";
+                var parameters = new { productId = id };
+                data = connection.QueryFirstOrDefault<Product>(sql: sql, param: parameters, commandType: CommandType.Text);
+                connection.Close();
+            }
             return data;
+      
         }
 
-        public ProductAttribute GetAttribute(long attributeID)
+        public ProductAttribute? GetAttribute(long id)
         {
-            ProductAttribute data = null;
-            using (SqlConnection conn = OpenConnection())
-            {
-                SqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = @"SELECT * FROM ProductAttributes WHERE AttributeID = @AttributeID";
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = conn;
-                cmd.Parameters.AddWithValue("@AttributeID", attributeID);
-                var dbReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                if (dbReader.Read())
-                {
-                    data = new ProductAttribute()
-                    {
-                        AttributeID = Convert.ToInt32(dbReader["AttributeID"]),
-                        ProductID = Convert.ToInt32(dbReader["ProductID"]),
-                        AttributeName = Convert.ToString(dbReader["AttributeName"]),
-                        AttributeValue = Convert.ToString(dbReader["AttributeValue"]),
-                        DisplayOrder = Convert.ToInt32(dbReader["DisplayOrder"]),
-                    };
-                }
-                dbReader.Close();
-                conn.Close();
-            };
 
+            ProductAttribute? data = null;
+            using (var connection = OpenConnection())
+            {
+                var sql = "SELECT * FROM ProductAttributes WHERE AttributeID = @AttributeID";
+                var parameters = new { productId = id };
+                data = connection.QueryFirstOrDefault<ProductAttribute>(sql: sql, param: parameters, commandType: CommandType.Text);
+                connection.Close();
+            }
             return data;
+           
         }
 
-        public ProductPhoto GetPhoto(long photoID)
+        public ProductPhoto? GetPhoto(long id)
         {
-            ProductPhoto data = null;
-            using (SqlConnection conn = OpenConnection())
-            {
-                SqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = @"SELECT * FROM ProductPhotos WHERE PhotoID = @PhotoID";
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = conn;
-                cmd.Parameters.AddWithValue("@PhotoID", photoID);
-                var dbReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                if (dbReader.Read())
+           
+                ProductPhoto? data = null;
+                using (var connection = OpenConnection())
                 {
-                    data = new ProductPhoto()
-                    {
-                        PhotoID = Convert.ToInt32(dbReader["PhotoID"]),
-                        ProductID = Convert.ToInt32(dbReader["ProductID"]),
-                        Photo = Convert.ToString(dbReader["Photo"]),
-                        Description = Convert.ToString(dbReader["Description"]),
-                        DisplayOrder = Convert.ToInt32(dbReader["DisplayOrder"]),
-                        IsHidden = Convert.ToBoolean(dbReader["IsHidden"]),
-                    };
+                    var sql = "SELECT * FROM ProductPhotos WHERE PhotoID = @PhotoId";
+                    var parameters = new { productID = id };
+                    data = connection.QueryFirstOrDefault<ProductPhoto>(sql: sql, param: parameters, commandType: CommandType.Text);
+                    connection.Close();
                 }
-                dbReader.Close();
-                conn.Close();
-            };
+                return data;
 
-            return data;
+              
         }
 
         /// <summary>
@@ -318,51 +282,46 @@ namespace SV20T1080029.DataLayers.SQLServer
         /// <returns></returns>
         public IList<Product> List(int page = 1, int pageSize = 0, string searchValue = "", int categoryID = 0, int supplierID = 0)
         {
-            List<Product> data = new List<Product>();
-
-            if (searchValue != "")
+            List<Product> data;
+            if (!string.IsNullOrEmpty(searchValue))
                 searchValue = "%" + searchValue + "%";
-
-            using (SqlConnection conn = OpenConnection())
+            using (var connection = OpenConnection())
             {
-                SqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = @"SELECT *
-                                    FROM 
-                                    (
-                                        SELECT  *, ROW_NUMBER() OVER (ORDER BY ProductName, CategoryID, SupplierID) AS RowNumber
+                var sql = @"with cte as
+                (
+                 SELECT  *, ROW_NUMBER() OVER (ORDER BY ProductName, CategoryID, SupplierID) AS RowNumber
                                         FROM    Products
                                         WHERE   ((@SearchValue = N'') OR (ProductName LIKE @SearchValue))
                                                 AND ((@CategoryID = 0) OR (CategoryID = @CategoryID))
                                                 AND ((@SupplierID = 0) OR (SupplierID = @SupplierID))
-                                    )   AS t
-                                    WHERE (@PageSize = 0) OR (t.RowNumber BETWEEN (@Page - 1) * @PageSize + 1 AND @Page * @PageSize)";
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = conn;
-                cmd.Parameters.AddWithValue("@Page", page);
-                cmd.Parameters.AddWithValue("@PageSize", pageSize);
-                cmd.Parameters.AddWithValue("@SearchValue", searchValue);
-                cmd.Parameters.AddWithValue("@CategoryID", categoryID);
-                cmd.Parameters.AddWithValue("@SupplierID", supplierID);
+                )
 
-                var dbReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (dbReader.Read())
+                select * from cte
+                where (@pageSize = 0)
+                   OR (t.RowNumber BETWEEN (@Page - 1) * @PageSize + 1 AND @Page * @PageSize)
+                    order by RowNumber";
+                var parameters = new
                 {
-                    data.Add(new Product()
-                    {
-                        ProductID = Convert.ToInt32(dbReader["ProductID"]),
-                        ProductName = Convert.ToString(dbReader["ProductName"]),
-                        SupplierID = Convert.ToInt32(dbReader["SupplierID"]),
-                        CategoryID = Convert.ToInt32(dbReader["CategoryID"]),
-                        Unit = Convert.ToString(dbReader["Unit"]),
-                        Price = Convert.ToInt32(dbReader["Price"]),
-                        Photo = Convert.ToString(dbReader["Photo"])
-                    });
-                }
-                dbReader.Close();
-                conn.Close();
-            };
+                    page = page,
+                    pageSize = pageSize,
+                    searchValue = searchValue,
+                    categoryID = categoryID,
+                    supplierID = supplierID
+                };
+                data = connection.Query<Product>(sql: sql, param: parameters, commandType: CommandType.Text).ToList();
+
+                connection.Close();
+            }
             return data;
+
+          
         }
+
+        public IList<Product> List(int page = 1, int pageSize = 0, string searchValue = "", int categoryID = 0, int supplierID = 0, decimal minPrice = 0, decimal maxPrice = 0)
+        {
+            throw new NotImplementedException();
+        }
+
         public IList<ProductAttribute> ListAttributes(int productID)
         {
             List<ProductAttribute> data = new List<ProductAttribute>();
@@ -379,8 +338,8 @@ namespace SV20T1080029.DataLayers.SQLServer
                 {
                     data.Add(new ProductAttribute()
                     {
-                        AttributeID = Convert.ToInt32(dbReader["AttributeID"]),
-                        ProductID = Convert.ToInt32(dbReader["ProductID"]),
+                        AttributeId = Convert.ToInt32(dbReader["AttributeID"]),
+                        ProductId = Convert.ToInt32(dbReader["ProductID"]),
                         AttributeName = Convert.ToString(dbReader["AttributeName"]),
                         AttributeValue = Convert.ToString(dbReader["AttributeValue"]),
                         DisplayOrder = Convert.ToInt32(dbReader["DisplayOrder"])
@@ -407,8 +366,8 @@ namespace SV20T1080029.DataLayers.SQLServer
                 {
                     data.Add(new ProductPhoto()
                     {
-                        PhotoID = Convert.ToInt32(dbReader["PhotoID"]),
-                        ProductID = Convert.ToInt32(dbReader["ProductID"]),
+                        PhotoId = Convert.ToInt32(dbReader["PhotoID"]),
+                        ProductId = Convert.ToInt32(dbReader["ProductID"]),
                         Photo = Convert.ToString(dbReader["Photo"]),
                         Description = Convert.ToString(dbReader["Description"]),
                         DisplayOrder = Convert.ToInt32(dbReader["DisplayOrder"]),
@@ -438,12 +397,12 @@ namespace SV20T1080029.DataLayers.SQLServer
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = conn;
                 cmd.Parameters.AddWithValue("@ProductName", data.ProductName);
-                cmd.Parameters.AddWithValue("@SupplierID", data.SupplierID);
-                cmd.Parameters.AddWithValue("@CategoryID", data.CategoryID);
+                cmd.Parameters.AddWithValue("@SupplierID", data.SupplierId);
+                cmd.Parameters.AddWithValue("@CategoryID", data.CategoryId);
                 cmd.Parameters.AddWithValue("@Unit", data.Unit);
                 cmd.Parameters.AddWithValue("@Price", data.Price);
                 cmd.Parameters.AddWithValue("@Photo", data.Photo);
-                cmd.Parameters.AddWithValue("@ProductID", data.ProductID);
+                cmd.Parameters.AddWithValue("@ProductID", data.ProductId);
 
                 result = cmd.ExecuteNonQuery() > 0;
                 conn.Close();
@@ -471,11 +430,11 @@ namespace SV20T1080029.DataLayers.SQLServer
                                     WHERE       AttributeID = @AttributeID";
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = conn;
-                cmd.Parameters.AddWithValue("@ProductID", data.ProductID);
+                cmd.Parameters.AddWithValue("@ProductID", data.ProductId);
                 cmd.Parameters.AddWithValue("@AttributeName", data.AttributeName);
                 cmd.Parameters.AddWithValue("@AttributeValue", data.AttributeValue);
                 cmd.Parameters.AddWithValue("@DisplayOrder", data.DisplayOrder);
-                cmd.Parameters.AddWithValue("@AttributeID", data.AttributeID);
+                cmd.Parameters.AddWithValue("@AttributeID", data.AttributeId);
 
                 result = cmd.ExecuteNonQuery() > 0;
                 conn.Close();
@@ -498,12 +457,12 @@ namespace SV20T1080029.DataLayers.SQLServer
                                     WHERE       PhotoID = @PhotoID";
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = conn;
-                cmd.Parameters.AddWithValue("@ProductID", data.ProductID);
+                cmd.Parameters.AddWithValue("@ProductID", data.ProductId);
                 cmd.Parameters.AddWithValue("@Photo", data.Photo);
                 cmd.Parameters.AddWithValue("@Description", data.Description);
                 cmd.Parameters.AddWithValue("@DisplayOrder", data.DisplayOrder);
                 cmd.Parameters.AddWithValue("@IsHidden", data.IsHidden);
-                cmd.Parameters.AddWithValue("@PhotoID", data.PhotoID);
+                cmd.Parameters.AddWithValue("@PhotoID", data.PhotoId);
 
                 result = cmd.ExecuteNonQuery() > 0;
                 conn.Close();
@@ -527,7 +486,7 @@ namespace SV20T1080029.DataLayers.SQLServer
 
         }
       
-        IList<Product> IProductDAL.List(int page, int pageSize, string searchValue, int categoryID, int supplierID )
+        IList<Product> IProductDAL.List(int page, int pageSize, string searchValue, int categoryID, int supplierID, int minPrice, int maxPrice)
         {
             List<Product> data;
             if (!string.IsNullOrEmpty(searchValue))
@@ -544,6 +503,7 @@ namespace SV20T1080029.DataLayers.SQLServer
         ((@SearchValue = '') OR (ProductName LIKE '%' + @SearchValue + '%'))
         AND ((@CategoryID = 0) OR (CategoryID = @CategoryID))
         AND ((@SupplierID = 0) OR (SupplierID = @SupplierID))
+  AND ((Price BETWEEN @minPrice AND @maxPrice) OR (@minPrice IS NULL AND @maxPrice IS NULL))
 )
 
 SELECT * 
@@ -558,7 +518,9 @@ WHERE
                     searchValue = searchValue,
                     categoryID = categoryID,
                     supplierID = supplierID,
-                    
+                    minPrice = minPrice,
+                    maxPrice = maxPrice
+
                 };
 
                 data = connection.Query<Product>(sql: sql, param: parameters, commandType: CommandType.Text).ToList();
@@ -566,5 +528,7 @@ WHERE
             }
             return data;
         }
+
+     
     }
 }

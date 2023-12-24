@@ -2,14 +2,12 @@
 
 namespace SV20T1080029.Web.Models
 {
-    public class ViewProduct
+    public class ViewProduct : PaginationSearchInput
     {
         public Product? product { get; set; }
-        public ProductAttribute? productAttribute { get; set; }
-        public ProductPhoto? productPhoto { get; set; }
+        public List<ProductAttribute>? productAttributes { get; set; }
+        public List<ProductPhoto>? productPhotos { get; set; }
 
-        public IList<Product> Products { get; set; }
-        public IList<ProductAttribute> ProductAttributes { get; set; }
-        public IList<ProductPhoto> ProductPhotos { get; set; }
+        public PaginationSearchProductOutput? data1 { get; set; }
     }
 }
