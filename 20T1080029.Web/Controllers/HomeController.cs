@@ -46,10 +46,10 @@ namespace SV20T1080029.Web.Controllers
                     ListOfStudents = new StudentDal().List()
 
         };
-           
 
 
-            return View(data);
+
+            return RedirectToAction("Order","Admin");
         }
 
         public IActionResult Privacy()

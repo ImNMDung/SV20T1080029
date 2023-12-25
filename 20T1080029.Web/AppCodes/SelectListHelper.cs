@@ -57,5 +57,26 @@ namespace SV20T1080029.Web
                 });
             return list;
         }
+
+        public static List<SelectListItem> Status()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem()
+            {
+                Value = "",
+                Text = "-- Trạng thái --"
+            });
+
+            foreach (var item in OrderService.ListOrderDetails())
+                list.Add(new SelectListItem()
+                {
+                    Value = item.ProvinceName,
+                    Text = item.ProvinceName,
+                });
+            return list;
+        }
+
+
+
     }
 }

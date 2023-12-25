@@ -17,18 +17,18 @@
 
     <div class="box-body">
         <form class="form-horizontal" method="post" action="~/Admin/Product/Save" enctype="multipart/form-data">
-            @Html.HiddenFor(m => m.product.ProductId)
+            @Html.HiddenFor(m => m.Product!.ProductId)
             <div class="form-group">
                 <label class="control-label col-sm-2">Tên mặt hàng:</label>
                 <div class="col-sm-10">
-                    @Html.TextBoxFor(m => m.product.ProductName, new { @class="form-control" })
+                    @Html.TextBoxFor(m => m.Product!.ProductName, new { @class="form-control" })
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Mô tả:</label>
                 <div class="col-sm-10">
-                    @Html.TextBoxFor(m => m.product.ProductDescription, new { @class="form-control" })
+                    @Html.TextBoxFor(m => m.Product!.ProductDescription, new { @class="form-control" })
                 </div>
             </div>
 
@@ -36,8 +36,8 @@
                 <label class="control-label col-sm-2">Loại hàng:</label>
                 <div class="col-sm-10">
 
-                    @Html.DropDownListFor(m => m.product.CategoryId,SelectListHelper.Category(),new {@class="form-control"})
-                    @Html.ValidationMessageFor(m => m.product.CategoryId,"*" ,new {@style="color:#f00"})
+                    @Html.DropDownListFor(m => m.Product!.CategoryId,SelectListHelper.Category(),new {@class="form-control"})
+                    @Html.ValidationMessageFor(m => m.Product!.CategoryId,"*" ,new {@style="color:#f00"})
 
                 </div>
             </div>
@@ -46,8 +46,8 @@
                 <label class="control-label col-sm-2">Nhà cung cấp:</label>
                 <div class="col-sm-10">
 
-                    @Html.DropDownListFor(m => m.product.SupplierId,SelectListHelper.Supplier(),new {@class="form-control"})
-                    @Html.ValidationMessageFor(m => m.product.SupplierId,"*" ,new {@style="color:#f00"})
+                    @Html.DropDownListFor(m => m.Product!.SupplierId,SelectListHelper.Supplier(),new {@class="form-control"})
+                    @Html.ValidationMessageFor(m => m.Product!.SupplierId,"*" ,new {@style="color:#f00"})
 
                 </div>
             </div>
@@ -55,23 +55,23 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Đơn vị tính:</label>
                 <div class="col-sm-10">
-                    @Html.TextBoxFor(m => m.product.Unit, new {@class="form-control"})
-                    @Html.ValidationMessageFor(m => m.product.Unit,"*" ,new {@style="color:#f00"})
+                    @Html.TextBoxFor(m => m.Product!.Unit, new {@class="form-control"})
+                    @Html.ValidationMessageFor(m => m.Product!.Unit,"*" ,new {@style="color:#f00"})
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Giá hàng:</label>
                 <div class="col-sm-10">
-                    @Html.TextBoxFor(m => m.product.Price, new {@class="form-control"})
-                    @Html.ValidationMessageFor(m => m.product.Price,"*" ,new {@style="color:#f00"})
+                    @Html.TextBoxFor(m => m.Product!.Price, new {@class="form-control"})
+                    @Html.ValidationMessageFor(m => m.Product!.Price,"*" ,new {@style="color:#f00"})
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-lg-offset-2 col-sm-10">
                     <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.product.IsSelling)  
+                            @Html.CheckBoxFor(m => m.Product!.IsSelling)  
                         Hiện đang được bán
                     </div>
                 </div>
@@ -80,7 +80,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Ảnh mặt hàng:</label>
                 <div class="col-sm-10">
-                    @Html.HiddenFor(m => m.product.Photo)
+                    @Html.HiddenFor(m => m.Product!.Photo)
                     <input type="file" class="form-control" name="uploadPhoto" accept="image/*"
                            onchange="document.getElementById('Photo').src = window.URL.createObjectURL(this.files[0])" />
                 </div>
@@ -88,7 +88,7 @@
 
             <div class="form-group">
                 <div class="col-lg-offset-2 col-sm-10">
-                    <img id="Photo" src="~/images/products/@Model.product.Photo" class="img img-bordered" style="width:200px" />
+                    <img id="Photo" src="~/images/products/@Model.Product!.Photo" class="img img-bordered" style="width:200px" />
                 </div>
             </div>
 
@@ -128,19 +128,19 @@
                     <th>Thứ tự hiển thị</th>
                     <th>Ẩn ảnh</th>
                     <th class="text-right">
-                        <a class="btn btn-xs btn-primary" href="~/Admin/Product/Photo/@Model.product.ProductId?method=add">
+                        <a class="btn btn-xs btn-primary" href="~/Admin/Product/Photo/@Model.Product.ProductId?method=add">
                             <i class="fa fa-plus"></i>
                         </a>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var photo in Model.productPhotos)
+                @foreach (var photo in Model.ProductPhotos!)
                 {
                     <input type="hidden" id="hiddenProductId" name="hiddenProductId" value="@photo.ProductId">
                     <tr>
                         <td style="vertical-align:middle">
-                            <img src="~/Images/Products/@photo.PhotoId" alt="" style="width:100px" />
+                            <img src="~/Images/Products/ProductPhotos/@photo.Photo" alt="" style="width:100px" />
                         </td>
                         <td style="vertical-align:middle;">
                             @photo.PhotoId
@@ -182,25 +182,26 @@
                     <th>Giá trị thuộc tính</th>
                     <th>Thứ tự hiển thị</th>
                     <th class="text-right">
-                        <a class="btn btn-xs btn-primary" href="~/Admin/Product/Attribute/123?method=add">
+                        <a class="btn btn-xs btn-primary" href="~/Admin/Product/Attribute/@Model.Product.ProductId?method=add">
                             <i class="fa fa-plus"></i>
                         </a>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.productAttributes)
+                @foreach (var item in Model.ProductAttributes!)
                 {
                     <input type="hidden" id="hiddenProductId" name="hiddenProductId" value="@item.ProductId">
                     <tr>
+                        
                         <td style="vertical-align:middle">@item.AttributeName</td>
                         <td style="vertical-align:middle;">@item.AttributeValue</td>
                         <td style="vertical-align:middle;">@item.DisplayOrder</td>
                         <td style="vertical-align:middle; text-align:right">
-                            <a class="btn btn-xs btn-primary" href="~/Admin/Product/Attribute/123?method=edit&attributeId=456">
+                            <a class="btn btn-xs btn-primary" href="~/Admin/Product/Attribute/@item.ProductId?method=edit&attributeId=@item.AttributeId">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <a class="btn btn-xs btn-danger" href="~/Admin/Product/Attribute/123?method=delete&attributeId=456" onclick="return confirm('Xóa thuộc tính này của mặt hàng?')">
+                            <a class="btn btn-xs btn-danger" href="~/Admin/Product/Attribute/@item.ProductId?method=delete&attributeId=@item.AttributeId" onclick="return confirm('Xóa thuộc tính này của mặt hàng?')">
                                 <i class="fa fa-remove"></i>
                             </a>
                         </td>

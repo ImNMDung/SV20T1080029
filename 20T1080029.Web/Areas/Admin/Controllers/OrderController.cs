@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using SV20T1080029.BusinessLayers;
+using SV20T1080029.DomainModels;
 using SV20T1080029.Web;
 using SV20T1080029.Web.Models;
 using System.Drawing.Printing;
@@ -74,9 +76,30 @@ namespace SV20T1080029.Web.Areas.Admin.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IActionResult Details(int id = 0)
+        public IActionResult Details(int id = 0 )
         {
-            return View();
+            //Code chức năng lấy và hiển thị thông tin của đơn hàng và chi tiết của đơn hàng
+            if (id < 0)
+            {
+                return RedirectToAction("Index");
+            }
+            // lấy thông tin của một đơn hàng và chi tiết đơn hàng đó theo mã đơn hàng
+            var order = OrderService.GetOrder(id);
+            var orderDetails = OrderService.ListOrderDetails(id);
+            
+
+            if (order == null || orderDetails
+                 == null)
+            {
+                return RedirectToAction("Index");
+            }
+            var result = new ViewOrder()
+            {
+                Order = order,
+                OrderDetails = orderDetails
+            };
+          
+            return View(result);
         }
         /// <summary>
         /// Giao diện cập nhật thông tin chi tiết đơn hàng
@@ -86,8 +109,40 @@ namespace SV20T1080029.Web.Areas.Admin.Controllers
         /// <returns></returns>        
         [HttpGet]
         public IActionResult EditDetail(int id = 0, int productId = 0)
-        {         
-            return View();
+        {
+            try
+            {
+                if (id < 0)
+                {
+                    // Chuyển hướng về action Index nếu id không hợp lệ
+                    return RedirectToAction("Index");
+                }
+
+                if (productId < 0)
+                {
+                    // Chuyển hướng về action Details nếu productId không hợp lệ
+                    return RedirectToAction("Details", new { id });
+                }
+
+                // Lấy thông tin chi tiết đơn hàng từ OrderService
+                var orderDetail = OrderService.GetOrderDetail(id, productId);
+
+                if (orderDetail == null)
+                {
+                    // Nếu không tìm thấy chi tiết đơn hàng, chuyển hướng về action Index
+                    return RedirectToAction("Index");
+                }
+
+                // Trả về view với dữ liệu chi tiết đơn hàng
+                return View(orderDetail);
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi và xử lý tùy theo yêu cầu của bạn
+                
+                return RedirectToAction("Error");
+                throw; // Ném lại exception để xem thông báo lỗi chi tiết trong môi trường phát triển
+            }
         }
         /// <summary>
         /// Cập nhật chi tiết đơn hàng (trong giỏ hàng)
@@ -109,7 +164,26 @@ namespace SV20T1080029.Web.Areas.Admin.Controllers
         /// <param name="productID"></param>
         /// <returns></returns>        
         public IActionResult DeleteDetail(int id = 0, int productID = 0)
-        {            
+        {
+            //DONE: Code chức năng xóa 1 chi tiết trong đơn hàng
+            if (id < 0)
+            {
+                return RedirectToAction("Index");
+            }
+            if (productID < 0)
+            {
+                return RedirectToAction("Details", new { id = id });
+            }
+
+            // Xoá chi tiết 1 đơn hàng nếu kiểm tra đúng hết
+            bool isDeleted = OrderService.DeleteOrderDetail(id, productID);
+            if (!isDeleted)
+            {
+              //  TempData[ERROR_MESSAGE] = "Không thể xoá mặt hàng này";
+                return RedirectToAction("Details", new { id = id });
+            }
+           
+
             return RedirectToAction("Details", new { id = id });
         }
         /// <summary>
@@ -119,19 +193,56 @@ namespace SV20T1080029.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public IActionResult Delete(int id = 0)
         {
-            //TODO: Code chức năng để xóa đơn hàng (nếu được phép xóa)
-
-            return RedirectToAction("Index");
+            //DONE: Code chức năng để xóa đơn hàng (nếu được phép xóa)
+            if (id < 0)
+            {
+                return RedirectToAction("Index");
+            }
+            Order data = OrderService.GetOrder(id);
+            if (data == null)
+            {
+                return RedirectToAction("Index");
+            }
+            // Xoá đơn hàng ở trạng thái vừa tạo, bị huỷ hoặc bị từ chối
+            if (data.Status == OrderStatus.INIT
+                || data.Status == OrderStatus.CANCEL
+                || data.Status == OrderStatus.REJECTED)
+            {
+                OrderService.DeleteOrder(id);
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction($"Details", new {data.OrderID});
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        /// 
+
+
+        
+
+        
         public IActionResult Accept(int id = 0)
         {
-            //TODO: Duyệt chấp nhận đơn hàng
-
+            //DONE: Code chức năng chấp nhận đơn hàng (nếu được phép)
+            if (id <= 0)
+            {
+                return RedirectToAction("Index");
+            }
+            var  data = OrderService.GetOrder(id);
+            if (data == null)
+            {
+                return RedirectToAction("Index");
+            } else { 
+            bool isAccepted = OrderService.AcceptOrder(id);
+            if (!isAccepted)
+            {
+             //   TempData[ERROR_MESSAGE] = $"Chấp nhận đơn hàng thất bại vì trạng thái đơn hàng hiện tại là: {data.StatusDescription}";
+                return RedirectToAction($"Details", new { data.OrderID  });
+            }
+            }
             return RedirectToAction("Details", new { id = id });
         }
         /// <summary>

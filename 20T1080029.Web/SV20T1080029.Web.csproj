@@ -6091,4 +6091,8 @@
     <ProjectReference Include="..\SV20T1080029.DomainModels\SV20T1080029.DomainModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\products\productPhotos\" />
+  </ItemGroup>
+
 </Project>

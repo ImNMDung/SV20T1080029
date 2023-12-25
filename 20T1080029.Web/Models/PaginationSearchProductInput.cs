@@ -7,10 +7,10 @@
 
     {
 
-        public int supplierID { get; set; } = 0;
+        public int SupplierID { get; set; } = 0;
 
-        public int categoryID { get; set; } = 0;
-        public int minPrice { get; set; } = 0;
-        public long maxPrice { get; set; } = 9999999999;
+        public int CategoryID { get; set; } = 0;
+        public int MinPrice { get; set; } = 0;
+        public long MaxPrice { get; set; } = 0;
     }
 }

@@ -1,37 +1,69 @@
 ﻿@model SV20T1080029.DomainModels.ProductPhoto
 
+
 <div class="box box-primary">
-    <div class="box-header with-border">
+    <div class="box-header with-border ">
     </div>
 
     <div class="box-body">
         <form class="form-horizontal" action="~/Admin/Product/SavePhoto" method="post" enctype="multipart/form-data">
+            @Html.HiddenFor(m => m.ProductId)
+            @Html.HiddenFor(m => m.PhotoId)
+            <div class="form-group">
+                <label class="control-label col-sm-2">Ảnh minh họa:</label>
+                <div class="col-sm-10">
+                    @Html.HiddenFor(m => m.Photo)
+                    <input type="file" class="form-control" name="uploadPhoto" accept="image/*"
+                           onchange="document.getElementById('Photo').src = window.URL.createObjectURL(this.files[0])" />
+                </div>
+            </div>
 
             <div class="form-group">
-                <label class="control-label col-sm-2">Ảnh:</label>
-                <div class="col-sm-10">
-                    <input type="file" class="form-control" name="Photo" />
+                <div class="col-lg-offset-2 col-sm-10">
+                    <img id="Photo" src="~/images/products/@Model.Photo" class="img img-bordered" style="width:200px" />
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Mô tả:</label>
                 <div class="col-sm-10">
-                    @Html.TextBoxFor(m => m.Description, new { @class="form-control", autofocus = "autofocus" })
+                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control", type = "text", autofocus = "autofocus" })
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Thứ tự hiển thị:</label>
                 <div class="col-sm-10">
-                    @Html.TextBoxFor(m => m.DisplayOrder, new { @class="form-control" })
+                    @Html.ValidationMessageFor(m => m.DisplayOrder, "", new { @style = "color: #f00;" })
+                    @if (Model.PhotoId > 0)
+                    {
+                        @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control", type = "number" })
+                    }
+                    else
+                    {
+                        <input type="number" min="1" class="form-control" name="DisplayOrder" />
+                    }
+                    @* @Html.ValidationMessageFor(m => m.DisplayOrder,"", new {@style="color:#f00"})
+                    @Html.TextBoxFor(m => m.DisplayOrder, new { @class="form-control", type = "number"}) *@
                 </div>
             </div>
 
             <div class="form-group">
-                <div class="col-lg-offset-2 col-sm-10">
+                <div class="col-lg-offset-2 col-sm-10 checkbox">
                     <label>
-                        <input type="checkbox" name="IsHidden"> Ẩn ảnh (không hiển thị với khách hàng)
+                        @if (Model.PhotoId > 0)
+                        {
+                            <input id="isHidden" type="checkbox" name="IsHidden"
+                                   onclick="document.getElementById('isHidden').value = document.getElementById('isHidden').checked"
+                                   value="@Model.IsHidden.ToString()" @(Model.IsHidden ? "checked=\"checked\"" : "")>
+                        }
+                        else
+                        {
+                            <input id="isHidden" type="checkbox" name="IsHidden"
+                                   onclick="document.getElementById('isHidden').value = document.getElementById('isHidden').checked"
+                                   value="false" @(Model.IsHidden ? "checked=\"checked\"" : "")>
+                        }
+                        @* @Html.CheckBoxFor(m => m.IsHidden) *@Ẩn ảnh (không hiển thị với khách hàng)
                     </label>
                 </div>
             </div>
@@ -41,14 +73,14 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="fa fa-save"></i> Lưu dữ liệu
                     </button>
-                    <a class="btn btn-warning" href="~/Admin/Product/Edit/@(Model?.ProductId ?? 0)">
+                    <a class="btn btn-warning" href="~/Admin/Product/Edit/@Model.ProductId">
                         <i class="fa"></i> Quay lại
                     </a>
                 </div>
             </div>
         </form>
     </div>
-
     <div class="box-footer text-center">
     </div>
+
 </div>

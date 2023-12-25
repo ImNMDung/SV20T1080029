@@ -7,11 +7,11 @@ namespace SV20T1080029.Web.Models
     {
         public IList<Product> Data { get; set; }
        
-        public int supplierID { get; set; } = 0;
+        public int SupplierId { get; set; } = 0;
 
-        public int categoryID { get; set; } = 0;
-        public int minPrice { get; set; } = 0;
-        public long maxPrice { get; set; } = 9999999999;
+        public int CategoryId { get; set; } = 0;
+        public int MinPrice { get; set; } = 0;
+        public long MaxPrice { get; set; } = 9999999999;
 
     }
 }

@@ -98,9 +98,19 @@ namespace SV20T1080029.DataLayers.SQLServer
         /// <returns></returns>
         public bool Delete(int orderID)
         {
+     
             bool result = false;
+            using (var connection = OpenConnection())
+            {
 
+                var sql =  @"DELETE FROM OrderDetails WHERE OrderID = @OrderID
+                                        DELETE FROM Orders WHERE OrderID = @OrderID";
+                var parameters = new { @OrderID = orderID };
+                result = connection.Execute(sql: sql, param: parameters, commandType: CommandType.Text) > 0;
+                connection.Close();
+            }
             return result;
+
         }
         /// <summary>
         /// 
@@ -111,17 +121,28 @@ namespace SV20T1080029.DataLayers.SQLServer
         public bool DeleteDetail(int orderID, int productID)
         {
             bool result = false;
+            using (var connection = OpenConnection())
+            {
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = @"DELETE FROM OrderDetails WHERE OrderID = @OrderID AND ProductID = @ProductID";
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@OrderID", orderID);
+                cmd.Parameters.AddWithValue("@ProductID", productID);
 
+                result = cmd.ExecuteNonQuery() > 0;
+
+                connection.Close();
+            }
             return result;
         }
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="orderID"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        public Order Get(int orderID)
+        public Order? Get(int id)
         {
-            Order data = null;
+            Order? data = null;
 
             using (var connection = OpenConnection())
             {
@@ -138,7 +159,7 @@ namespace SV20T1080029.DataLayers.SQLServer
                                             LEFT JOIN Employees AS e ON o.EmployeeID = e.EmployeeID
                                             LEFT JOIN Shippers AS s ON o.ShipperID = s.ShipperID
                                     WHERE   o.OrderID = @OrderID";
-                var parameters = new { OrderID = orderID };
+                var parameters = new { OrderID = id };
                 data = connection.QueryFirstOrDefault<Order>(sql: sql, param: parameters, commandType: CommandType.Text);
                 connection.Close();
             }
@@ -150,10 +171,21 @@ namespace SV20T1080029.DataLayers.SQLServer
         /// <param name="orderID"></param>
         /// <param name="productID"></param>
         /// <returns></returns>
-        public OrderDetail GetDetail(int orderID, int productID)
+        public OrderDetail? GetDetail(int orderID, int productID)
         {
-            OrderDetail data = null;
+            OrderDetail? data = null;
+            using (var connection = OpenConnection())
+            {
+                var sql = @"SELECT	od.*, p.ProductName, p.Unit, p.Photo		
+                                    FROM	OrderDetails AS od
+		                                    JOIN Products AS p ON od.ProductID = p.ProductID
+                                    WHERE	od.OrderID = @OrderID AND od.ProductID = @ProductID";
 
+                var parameters = new { OrderID = orderID , ProductId = productID };
+                data = connection.QueryFirstOrDefault<OrderDetail?>(sql: sql, param: parameters, commandType: CommandType.Text);
+                connection.Close();
+                
+            }
             return data;
         }
         /// <summary>
@@ -214,25 +246,20 @@ namespace SV20T1080029.DataLayers.SQLServer
         /// <returns></returns>
         public IList<OrderDetail> ListDetails(int orderID)
         {
-            List<OrderDetail> data = new List<OrderDetail>();
+            List<OrderDetail> data ;
             using (var connection = OpenConnection())
             {
-                var cmd = connection.CreateCommand();
-                cmd.CommandText = @"SELECT	od.*, p.ProductName, p.Unit, p.Photo		
+                var sql = @"SELECT	od.*, p.ProductName, p.Unit, p.Photo		
                                     FROM	OrderDetails AS od
 		                                    JOIN Products AS p ON od.ProductID = p.ProductID
                                     WHERE	od.OrderID = @OrderID";
-                cmd.CommandType = CommandType.Text;
-                cmd.Parameters.AddWithValue("@OrderID", orderID);
-
-                using (var dbReader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                var parameters = new
                 {
-                    while (dbReader.Read())
-                    {
-                        data.Add(DataReaderToOrderDetail(dbReader));
-                    }
-                    dbReader.Close();
-                }
+                    orderID = orderID,
+                    
+              };
+                data = connection.Query<OrderDetail>(sql: sql, param: parameters, commandType: CommandType.Text).ToList();
+
                 connection.Close();
             }
             return data;
@@ -256,8 +283,43 @@ namespace SV20T1080029.DataLayers.SQLServer
         public bool Update(Order data)
         {
             bool result = false;
+            
+            using ( var connection = OpenConnection())
+            {
+                var sql = @"UPDATE Orders
+                                    SET     CustomerID = @CustomerID,
+                                            OrderTime = @OrderTime,
+                                            EmployeeID = @EmployeeID,
+                                            AcceptTime = @AcceptTime,
+                                            ShipperID = @ShipperID,
+                                            ShippedTime = @ShippedTime,
+                                            FinishedTime = @FinishedTime,
+                                            Status = @Status
+                                    WHERE   OrderID = @OrderID";
+                var parameters = new
+                {
+                    
+                    CustomerID = data.CustomerID,
+                    OrderTime= data.OrderTime,
+                    EmployeeID=  data.EmployeeID,
+                    AcceptTime=data.AcceptTime,
+                    ShipperID= data.ShipperID,
+                    ShippedTime=data.ShippedTime,
+                    FinishedTime = data.FinishedTime,
+                    Status = data.Status,
+                    OrderID = data.OrderID
 
+
+
+                };
+                result = connection.Execute(sql: sql, param: parameters, commandType: CommandType.Text) > 0;
+
+                connection.Close();
+            }
             return result;
-        }
+
+
+        
+    }
     }
 }

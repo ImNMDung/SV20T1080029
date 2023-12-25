@@ -29,7 +29,7 @@ namespace SV20T1080029.DomainModels
         /// <summary>
         /// Mã trạng thái đơn hàng
         /// </summary>
-        public int Status { get; set; }
+        public int? Status { get; set; }
 
         /// <summary>
         /// Mã khách hàng đặt mua hàng
@@ -42,7 +42,7 @@ namespace SV20T1080029.DomainModels
         /// <summary>
         /// Tên giao dịch của khách hàng
         /// </summary>
-        public string CustomerContactNam { get; set; }
+        public string CustomerContactName { get; set; }
         /// <summary>
         /// Địa chỉ của khách hàng
         /// </summary>

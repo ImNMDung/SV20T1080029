@@ -1,4 +1,5 @@
 ﻿using SV20T1080029.DataLayers;
+using SV20T1080029.DataLayers.SQLServer;
 using SV20T1080029.DomainModels;
 using System;
 using System.Collections.Generic;
@@ -114,7 +115,7 @@ namespace SV20T1080029.BusinessLayers
         /// <returns></returns>
         public static bool AcceptOrder(int orderID)
         {
-            Order data = orderDB.Get(orderID);
+            var data = orderDB.Get(orderID);
             if (data == null)
                 return false;
 
@@ -196,6 +197,13 @@ namespace SV20T1080029.BusinessLayers
         {
             return orderDB.ListDetails(orderID).ToList();
         }
+
+        public static List<OrderDetail> ListOfOrderStatuss()
+        {
+
+            return orderDB.List().ToList();
+        }
+
         /// <summary>
         /// Lấy 1 chi tiết của đơn hàng
         /// </summary>
