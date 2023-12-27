@@ -40,6 +40,16 @@ namespace SV20T1080029.DomainModels
         /// Giá bán
         /// </summary>
         public decimal SalePrice { get; set; } = 0;
+
+        /// <summary>
+        /// tỉnh giao hàng
+        /// </summary>
+        public string? DeliveryProvince { get; set; }
+        /// <summary>
+        /// địa chỉ giao hàng
+        /// </summary>
+        public string? DeliveryAddress { get; set; }
+
         /// <summary>
         /// Thành tiền = Số lượng * Giá bán
         /// </summary>

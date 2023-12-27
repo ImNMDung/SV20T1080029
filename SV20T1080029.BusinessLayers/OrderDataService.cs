@@ -9,17 +9,25 @@ using System.Threading.Tasks;
 
 namespace SV20T1080029.BusinessLayers
 {
-    public static class OrderService
+    public static class OrderDataService
     {
         private static IOrderDAL orderDB;
         /// <summary>
         /// 
         /// </summary>
-        static OrderService()
+        static OrderDataService()
         {
             string connectionString = "Server=DESKTOP-GR9NFKL\\KEITH;User=sa;Password=123456;Database=LiteCommerceDB;TrustServerCertificate=true";
             orderDB = new DataLayers.SQLServer.OrderDAL(connectionString);
         }
+
+
+        public static int CountOrder()
+        {
+            var count = orderDB.Count(0,"");
+            return count;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -34,6 +42,13 @@ namespace SV20T1080029.BusinessLayers
             rowCount = orderDB.Count(status, searchValue);
             return orderDB.List(page, pageSize, status, searchValue).ToList();
         }
+
+        public static List<Order> ListOfOrders()
+        {
+         
+            return orderDB.ListOrderStatus().ToList();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -198,11 +213,7 @@ namespace SV20T1080029.BusinessLayers
             return orderDB.ListDetails(orderID).ToList();
         }
 
-        public static List<OrderDetail> ListOfOrderStatuss()
-        {
-
-            return orderDB.List().ToList();
-        }
+       
 
         /// <summary>
         /// Lấy 1 chi tiết của đơn hàng

@@ -45,6 +45,20 @@ namespace SV20T1080029.BusinessLayers
            
                 }
 
+
+        public static int CountCustomer()
+        {
+            var count = customerDB.Count("");
+            return count;
+        }
+        public static int CountEmployeer()
+        {
+            var count = employeeDB.Count("");
+            return count;
+        }
+       
+
+
         public static bool DeleteCustomer(int id)
         {
             return customerDB.Delete(id);
@@ -137,6 +151,22 @@ namespace SV20T1080029.BusinessLayers
 
             return supplierDB.List().ToList();
         }
+        public static List<Shipper> ListOfShippers()
+        {
+
+            return shipperDB.List().ToList();
+        }
+        public static List<Customer> ListOfCustomers()
+        {
+
+            return customerDB.List().ToList();
+        }
+        public static List<Employee> ListOfEmployees()
+        {
+
+            return employeeDB.List().ToList();
+        }
+
 
         public static int AddCustomer(Customer data)
         {

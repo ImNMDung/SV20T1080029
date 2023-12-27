@@ -1,5 +1,5 @@
 ﻿@using SV20T1080029.Web;
-@model SV20T1080029.Web.Models.PaginationSearchOrderInput
+@model SV20T1080029.Web.Models.PaginationSearchInput
 @{
     ViewBag.Title = "Quản lý đơn hàng";
 }
@@ -11,18 +11,18 @@
             @Html.HiddenFor(m => m.PageSize)
             <input type="hidden" name="pageSize" value="@Model.PageSize" />
             <div class="row">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <select class="form-control" name="Status">
-                        <option value="0">-- Trạng thái --</option>
-                        <option value="1">Đơn hàng mới (chờ duyệt)</option>
-                        <option value="2">Đơn hàng đã duyệt (chờ chuyển hàng)</option>
-                        <option value="3">Đơn hàng đang được giao</option>
-                        <option value="4">Đơn hàng đã hoàn tất thành công</option>
-                        <option value="-1">Đơn hàng bị hủy</option>
-                        <option value="-2">Đơn hàng bị từ chối</option>
+                    @foreach (var item in SelectListHelper.Status())
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+
+                   
+                     
                     </select>
                 </div>
-                <div class="col-sm-10 input-group">
+                <div class="col-sm-8 input-group">
                     <input type="text" name="searchValue" value="@Model.SearchValue"
                            class="form-control"
                            placeholder="Tìm kiếm theo tên khách hàng hoặc tên người giao hàng">
@@ -38,7 +38,7 @@
         <div id="searchResult"></div>
     </div>
 </div>
-@section Scripts {
+@section Scripts{
     <script>
         $(document).ready(function () {
             // khi submit form search thì tìm kiếm từ trang 1

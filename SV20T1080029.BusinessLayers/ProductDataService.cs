@@ -32,18 +32,28 @@ namespace SV20T1080029.BusinessLayers
             productDB = new DataLayers.SQLServer.ProductDAL(connectionString);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static int CountProduct()
+        {
+            var count = productDB.Count("");
+            return count;
+        }
 
-      
+
         /// <summary>
         /// Tìm kiếm và lấy danh sách mặt hàng (không phân trang)
         /// </summary>
         /// <param name="searchValue">Tên mặt hàng cần tìm (chuỗi rỗng nếu không tìm kiếm)</param>        
         /// <returns></returns>
-        public static List<Product> ListProducts(string searchValue = "")
+        public static List<Product> ListProducts(out int rowCount, int page = 1, int pageSize = 0, string searchValue = "", int categoryID = 0, int supplierID = 0, decimal minPrice = 0, decimal maxPrice = 0)
         {
-            return productDB.List(1, 0, searchValue, 0, 0, 0, 0).ToList();
+            rowCount = productDB.Count(searchValue, categoryID, supplierID, minPrice, maxPrice);
+            return productDB.List(page, pageSize, searchValue, categoryID, supplierID, minPrice, maxPrice).ToList();
         }
- 
+
         /// <summary>
         /// Tìm kiếm và lấy danh sách mặt hàng dưới dạng phân trang
         /// </summary>

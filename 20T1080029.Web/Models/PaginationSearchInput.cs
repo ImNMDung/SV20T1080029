@@ -7,7 +7,7 @@
 
     {
         public int Page { get; set; }
-        public int PageSize { get; set; } = 20;
+        public int PageSize { get; set; } = 10;
 
         public string SearchValue { get; set; } = "";
         public int RowCount { get; set; }

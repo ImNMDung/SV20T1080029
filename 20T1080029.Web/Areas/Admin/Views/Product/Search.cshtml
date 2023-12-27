@@ -43,42 +43,45 @@
         </tbody>
     </table>
 </div>
+@if (Model.PageCount > 1)
+{
 <div class="text-center">
     <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
         <ul class="pagination">
-            @if (Model.Page > 1)
-            {
-                <li class="paginate_button previous" id="example2_previous">
-                    <a href="~/Admin/Product?page=@previousPage&searchValue=@Model.SearchValue" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
-                </li>
-            }
-            @for (int i = 1; i <= Model.PageCount; i++)
-            {
-                if (i == Model.Page)
+                @if (Model.Page > 1)
                 {
-                    <li class="paginate_button active">
-                        <a href="#" aria-controls="example2" data-dt-idx="@i" tabindex="0">@i</a>
+                    <li class="paginate_button previous" id="example2_previous">
+                        <a href="javascript:;" onclick="doSearch(@previousPage)" aria-controls="example2" data-dt-idx="0" tabindex="0">Trang trước</a>
                     </li>
                 }
-                else if (i <= 4 || i > Model.PageCount - 4 || (i >= Model.Page - 2 && i <= Model.Page + 2))
+                @for (int i = 1; i <= Model.PageCount; i++)
                 {
-                    <li class="page_link">
-                        <a href="javascript:;" onclick="doSearch(@i)" aria-controls="example2" data-dt-idx="" tabindex="@i">@i</a>
+                    if (i == Model.Page)
+                    {
+                        <li class="paginate_button active">
+                            <a href="#" aria-controls="example2" data-dt-idx="@i" tabindex="0">@i</a>
+                        </li>
+                    }
+                    else if (i <= 4 || i > Model.PageCount - 4 || (i >= Model.Page - 2 && i <= Model.Page + 2))
+                    {
+                        <li class="page_link">
+                            <a href="javascript:;" onclick="doSearch(@i)" aria-controls="example2" data-dt-idx="">@i</a>
+                        </li>
+                    }
+                    else if (i == Model.Page - 4 || i == Model.Page + 4)
+                    {
+                        <li class="paginate_button">
+                            <a href="#" aria-controls="example2" data-dt-idx="" tabindex="0">...</a>
+                        </li>
+                    }
+                }
+                @if (Model.Page < Model.PageCount)
+                {
+                    <li class="paginate_button next" id="example2_next">
+                        <a href="javascript:;" onclick="doSearch(@nextPage)" aria-controls="example2" data-dt-idx="" tabindex="0">Trang tiếp theo</a>
                     </li>
                 }
-                else if (i == Model.Page - 4 || i == Model.Page + 4)
-                {
-                    <li class="paginate_button">
-                        <a href="#" aria-controls="example2" data-dt-idx="" tabindex="0">...</a>
-                    </li>
-                }
-            }
-            @if (Model.Page < Model.PageCount)
-            {
-                <li class="paginate_button next" id="example2_next">
-                    <a href="~/Admin/Product?page=@nextPage&searchValue=@Model.SearchValue" aria-controls="example2" data-dt-idx="" tabindex="0">Next</a>
-                </li>
-            }
         </ul>
     </div>
 </div>
+}

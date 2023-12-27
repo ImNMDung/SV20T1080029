@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SV20T1080029.BusinessLayers;
+using SV20T1080029.Web.Models;
 
 namespace SV20T1080029.Web.Areas.Admin.Controllers
 {/// <summary>
@@ -11,7 +13,27 @@ namespace SV20T1080029.Web.Areas.Admin.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+
+            var countCustomer = CommonDataService.CountCustomer();
+
+            var countEmployee = CommonDataService.CountEmployeer();
+
+            var countProduct = ProductDataService.CountProduct();
+
+            var countOrder = OrderDataService.CountOrder();
+
+
+            var viewModel = new ViewDashboard { 
+                CountCustomer = countCustomer,
+                CountEmployee =countEmployee,
+                CountOrder = countOrder,
+                CountProduct = countProduct
+
+            };
+            return View(viewModel);
+
+
+           
         }
     }
 }

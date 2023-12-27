@@ -35,9 +35,9 @@ namespace SV20T1080029.Web.Areas.Admin.Controllers
 
             string? addsuccessMessage = Convert.ToString(TempData["AddSuccessMessage"]);
             ViewBag.AddSuccessMessage = addsuccessMessage;
-
             return View(model);
         }
+
         // create loại hàng
         public IActionResult Create()
         {

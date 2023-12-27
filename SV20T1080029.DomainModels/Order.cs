@@ -38,19 +38,19 @@ namespace SV20T1080029.DomainModels
         /// <summary>
         /// Tên khách hàng
         /// </summary>
-        public string CustomerName { get; set; }
+        public string? CustomerName { get; set; }
         /// <summary>
         /// Tên giao dịch của khách hàng
         /// </summary>
-        public string CustomerContactName { get; set; }
+        public string? CustomerContactName { get; set; }
         /// <summary>
         /// Địa chỉ của khách hàng
         /// </summary>
-        public string CustomerAddress { get; set; }
+        public string? CustomerAddress { get; set; }
         /// <summary>
         /// Email của khách hàng
         /// </summary>
-        public string CustomerEmail { get; set; }
+        public string? CustomerEmail { get; set; }
 
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace SV20T1080029.DomainModels
         /// <summary>
         /// Họ tên của nhân viên phụ trách đơn hàng
         /// </summary>
-        public string EmployeeFullName { get; set; }
+        public string? EmployeeFullName { get; set; }
 
         /// <summary>
         /// Mã người giao hàng
@@ -69,12 +69,19 @@ namespace SV20T1080029.DomainModels
         /// <summary>
         /// Tên người giao hàng
         /// </summary>
-        public string ShipperName { get; set; }
+        public string? ShipperName { get; set; }
         /// <summary>
         /// Điện thoại của người giao hàng
         /// </summary>
-        public string ShipperPhone { get; set; }
-
+        public string? ShipperPhone { get; set; }
+        /// <summary>
+        /// tỉnh giao hàng
+        /// </summary>
+        public string DeliveryProvince { get; set; }
+        /// <summary>
+        /// địa chỉ giao hàng
+        /// </summary>
+        public string DeliveryAddress { get; set; }
         /// <summary>
         /// Mô tả trạng thái đơn hàng dựa trên mã trạng thái
         /// </summary>

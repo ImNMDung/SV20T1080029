@@ -1,4 +1,4 @@
-﻿
+﻿@model SV20T1080029.Web.Models.ViewDashboard
 @{
     ViewBag.Title = "Trang Chủ";
 }
@@ -25,7 +25,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Sản Phẩm</span>
-                    <span class="info-box-number">41,410</span>
+                    <span class="info-box-number">@Model.CountProduct</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -41,7 +41,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Đơn Hàng</span>
-                    <span class="info-box-number">760</span>
+                    <span class="info-box-number">@Model.CountOrder</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -54,7 +54,20 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Khách Hàng</span>
-                    <span class="info-box-number">2,000</span>
+                    <span class="info-box-number">@Model.CountCustomer</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Nhân Viên</span>
+                    <span class="info-box-number">@Model.CountEmployee</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>

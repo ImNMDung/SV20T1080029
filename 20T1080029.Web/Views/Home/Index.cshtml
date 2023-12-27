@@ -1,34 +1,428 @@
-﻿@model HomeIndexModel
+﻿@using SV20T1080029.Web;
+@model SV20T1080029.Web.Models.DoubleView;
+
+
+
 @{
-    ViewData["Title"] = "Home Page";
-    // C1
-    // string titleMessage = Convert.ToString(ViewData["LitleMessage"]);
-    // List<Person> listOfPerson = ViewData["ListOfPerson"] as List<Person>;\
+    ViewData["Title"] = "Trang Chủ";
+}
+<style>
+    /* Đảm bảo hình ảnh có kích thước mặc định */
+    .custom-img {
+        width: 900px;
+        height: 430px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    /* Khi màn hình nhỏ hơn, thay đổi kích thước hình ảnh */
+    @@media (max-width: 576px) {
+        .custom-img {
+            width: 600px;
+            height: auto;
+        }
+    }
+</style>
+
+
+
+<div class="top_catagory_area section-padding-80 clearfix bg-imgz">
+    <div class="container1">
+        <div class="justify-content-center">
+            <div class="row align-items-center justify-content-center ">
+                <!-- Single Catagory -->
+                <div class="col-4 col-sm-6 col-md-4">
+                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img  ">
+                        <div class="">
+
+                            <div id="tong-slide">
+                                <div class="form">
+                                    <div class="form-slide">
+                                        <div class="show-danhmuc">
+                                            <ul class="sub-menu">
+                                                @foreach (var item in SelectListHelper.Category())
+                                                {
+                                                    if (item.Value.ToString() == "")
+                                                    {
+                                                        continue;
+                                                    }
+                                                    <li class="cap1">
+                                                        @*
+                                                    @Html.LabelFor(m => m.CategoryId ,SelectListHelper.Category().ToString() , new { @class = "form-control transition" , @href= "~/admin/product/${m.CategoryId}"   })
+                                                    *@
+                                                        <a class="transition" title="@item.Value" href="~/Shop?CategoryId=@item.Value"><span>@item.Text</span><i class="fa fa-caret-right"></i></a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-6 offset-1">
+
+                    <div id="carouselExample" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="~/images/baner/1.jpg" class="d-block w-100 custom-img" alt="Image 1">
+                            </div>
+                            <div class="carousel-item ">
+                                <img src="~/images/baner/2.jpg" class="d-block w-100 custom-img" alt="Image 2">
+                            </div>
+                            <div class="carousel-item ">
+                                <img src="~/images/baner/3.jpeg" class="d-block w-100 custom-img" alt="Image 2">
+                            </div>
+
+                            <div class="carousel-item ">
+                                <img src="~/images/baner/4.jpg" class="d-block w-100 custom-img" alt="Image 2">
+                            </div>
+                            <!-- Add more carousel items as needed -->
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+
+                    <script src="~/images/baner/1.jpg"></script>
+                    <script src="~/images/logo/baner.png"></script>
+                    <script src="~/images/logo/baner.png"></script>
+
+                    <script>
+                        $(document).ready(function () {
+                            // Kích hoạt carousel và thiết lập thời gian lướt qua lại là 5 giây
+                            $('#carouselExample').carousel({
+                                interval: 5000
+                            });
+                        });
+                    </script>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="new_arrivals_area section-padding-80 clearfix">
+    <div class="container new_arrivals_area1">
+        <div class="container ">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading text-center">
+                        <h2>Sản phẩm phổ biến</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            @{
+
+                var random = new Random();
+
+
+                var randomData = Model.data1.Data.OrderBy(x => random.Next()).Take(4);
+            }
+            <div class="row">
+                <div class="col-12">
+                    <div class="popular-products-slides owl-carousel">
+                        @foreach (var item in randomData)
+                        {
+                            <!-- Single Product -->
+                            <div class="single-product-wrapper  popular-products-slides1">
+                                <!-- Product Image -->
+                                <div class="product-img">
+
+                                    <img src="~/images/products/@item.Photo" alt="">
+                                    <!-- Hover Thumb -->
+                                    <img class="hover-img" src="~/images/products/@item.Photo" alt="">
+                                    <!-- Favourite -->
+                                    <div class="product-favourite">
+                                        <a href="#" class="favme fa fa-heart"></a>
+                                    </div>
+                                </div>
+
+                                <!-- Product Description -->
+                                <div class="product-description">
+                                    <span>topshop</span>
+                                    <a href="/Shop/Details/@item.ProductId">
+                                        <h6>@item.ProductName</h6>
+                                    </a>
+                                    <p class="product-price" id="amount">@item.Price.ToString("N0") VND</p>
+
+                                    <!-- Hover Content -->
+                                    <div class="hover-content">
+                                        <!-- Add to Cart -->
+                                        <div class="add-to-cart-btn">
+                                            <a href="#" class="btn essence-btn">Liên hệ</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<section class="new_arrivals_area section-padding-80 clearfix">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading text-center">
+                    <h2>Bàn điều khiển</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="popular-products-slides owl-carousel">
+
+                    @foreach (var item1 in Model.data1.Data)
+                    {
+                        if (item1.CategoryId.ToString() == "4")
+                        {
+                            <!-- Single Product -->
+                            <div class="single-product-wrapper">
+                                <!-- Product Image -->
+                                <div class="product-img">
+
+                                    <img src="~/images/products/@item1.Photo" alt="">
+                                    <!-- Hover Thumb -->
+                                    <img class="hover-img" src="~/images/products/@item1.Photo" alt="">
+                                    <!-- Favourite -->
+                                    <div class="product-favourite">
+                                        <a href="#" class="favme fa fa-heart"></a>
+                                    </div>
+                                </div>
+
+                                <!-- Product Description -->
+                                <div class="product-description">
+                                    <span>topshop</span>
+                                    <a href="/Shop/Details/@item1.ProductId">
+                                        <h6>@item1.ProductName</h6>
+                                    </a>
+                                    <p class="product-price" id="amount">@item1.Price.ToString("N0") VNĐ</p>
+
+                                    <!-- Hover Content -->
+                                    <div class="hover-content">
+                                        <!-- Add to Cart -->
+                                        <div class="add-to-cart-btn">
+                                            <a href="#" class="btn essence-btn">Liên hệ</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+
+<section class="new_arrivals_area section-padding-80 clearfix">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading text-center">
+                    <h2>Đèn PARLED / BEAM</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="popular-products-slides owl-carousel">
+
+                    @foreach (var item1 in Model.data1.Data)
+                    {
+                        if (item1.CategoryId.ToString() == "1")
+                        {
+                            <!-- Single Product -->
+                            <div class="single-product-wrapper">
+                                <!-- Product Image -->
+                                <div class="product-img">
+
+                                    <img src="~/images/products/@item1.Photo" alt="">
+                                    <!-- Hover Thumb -->
+                                    <img class="hover-img" src="~/images/products/@item1.Photo" alt="">
+                                    <!-- Favourite -->
+                                    <div class="product-favourite">
+                                        <a href="#" class="favme fa fa-heart"></a>
+                                    </div>
+                                </div>
+
+                                <!-- Product Description -->
+                                <div class="product-description">
+                                    <span>topshop</span>
+                                    <a href="/Shop/Details/@item1.ProductId">
+                                        <h6>@item1.ProductName</h6>
+                                    </a>
+                                    <p class="product-price" id="amount">@item1.Price.ToString("N0") VNĐ</p>
+
+                                    <!-- Hover Content -->
+                                    <div class="hover-content">
+                                        <!-- Add to Cart -->
+                                        <div class="add-to-cart-btn">
+                                            <a href="#" class="btn essence-btn">Liên hệ</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<section class="new_arrivals_area section-padding-80 clearfix">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading text-center">
+                    <h2>Đèn Phòng Hát</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="popular-products-slides owl-carousel">
+
+                    @foreach (var item1 in Model.data1.Data)
+                    {
+                        if (item1.CategoryId.ToString() == "2")
+                        {
+                            <!-- Single Product -->
+                            <div class="single-product-wrapper">
+                                <!-- Product Image -->
+                                <div class="product-img">
+
+                                    <img src="~/images/products/@item1.Photo" alt="">
+                                    <!-- Hover Thumb -->
+                                    <img class="hover-img" src="~/images/products/@item1.Photo" alt="">
+                                    <!-- Favourite -->
+                                    <div class="product-favourite">
+                                        <a href="#" class="favme fa fa-heart"></a>
+                                    </div>
+                                </div>
+
+                                <!-- Product Description -->
+                                <div class="product-description">
+                                    <span>topshop</span>
+                                    <a href="/Shop/Details/@item1.ProductId">
+                                        <h6>@item1.ProductName</h6>
+                                    </a>
+                                    <p class="product-price" id="amount">@item1.Price.ToString("N0") VNĐ</p>
+
+                                    <!-- Hover Content -->
+                                    <div class="hover-content">
+                                        <!-- Add to Cart -->
+                                        <div class="add-to-cart-btn">
+                                            <a href="#" class="btn essence-btn">Liên hệ</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+@section Scripts{
+
+    <script>
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Lấy số tiền từ phần tử có id là "amount"
+            var amountElement = document.getElementById("amount");
+            var amount = parseInt(amountElement.textContent);
+
+            // Định dạng số tiền với dấu phẩy ngăn cách hàng nghìn
+            var formattedAmount = amount.toLocaleString();
+
+            // Hiển thị số tiền đã định dạng trong phần tử
+            amountElement.textContent = formattedAmount;
+
+
+
+            var h6Element = document.querySelector("h6"); // Chọn phần tử h6
+
+            if (h6Element) {
+                var textContent = h6Element.textContent || h6Element.innerText; // Lấy nội dung của phần tử h6
+                var words = textContent.split(' ');
+
+                // Kiểm tra xem có nhiều hơn 10 từ hay không
+                if (words.length > 7) {
+                    // Giữ 10 từ đầu tiên và thêm "..." phía sau
+                    var truncatedText = words.slice(0, 7).join(' ') + ' ...';
+                    h6Element.innerText = truncatedText; // Gán lại nội dung mới
+                }
+            }
+
+            var colors = ["#ff5733", "#33ff57", "#5733ff", "#33ffcc"];
+            var currentIndex = 0;
+
+            function changeBackgroundColor() {
+                currentIndex = (currentIndex + 1) % colors.length;
+                var newColor = colors[currentIndex];
+                document.querySelector('bg-imgz').style.backgroundColor = newColor;
+            }
+
+            // Kích hoạt chuyển động mỗi 5 giây
+            setInterval(changeBackgroundColor, 5000);
+
+
+
+        });
+
+
+    </script>
+
+
+
 }
 
-@* <h1>@Model.TitleMessage</h1>
-<table class="table table-bordered">
 
-    <thead>
-
-        <tr class="table table-danger">
-            <th> PersonID</th>
-            <th> Name </th>
-            <th> Address</th>
-            <th> Email</th>
-        </tr>
-    </thead>
-    <tbody>
-     
-        @foreach(var item in Model.ListOfPersons)
-        {
-            <tr>
-                <td>@item?.PersonId</td>
-                <td>@item?.Name</td>
-                <td>@item?.Address</td>
-                <td>@item?.Email</td>
-            </tr>
-        }
-    </tbody>
-</table>
- *@

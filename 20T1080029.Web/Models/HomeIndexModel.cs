@@ -5,7 +5,6 @@ namespace SV20T1080029.Web.Models
     {
 
         public string? TitleMessage { get; set; }
-        public List<Person>? ListOfPersons { get; set; }
-        public List<Student>? ListOfStudents { get; set; }
+      
     }
 }

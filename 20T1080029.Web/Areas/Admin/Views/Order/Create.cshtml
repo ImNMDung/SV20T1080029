@@ -1,14 +1,29 @@
-﻿@{
-    ViewBag.Title = "Lập đơn hàng";    
-}
+﻿@model IEnumerable<SV20T1080029.DomainModels.OrderDetail>;
+@using SV20T1080029.BusinessLayers;
+@using SV20T1080029.Web
+@using SV20T1080029.DomainModels
 
+@{
+    int stt = 0;
+    decimal sumTotal = 0;
+    ViewBag.Title = "Lập đơn hàng";
+    string errorMessage = ViewBag.ErrorMessage.ToString();
+}
 <div class="box box-primary">
+    @if (!string.IsNullOrWhiteSpace(errorMessage))
+    {
+        <div class="alert alert-warning alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Lỗi!</strong> @errorMessage
+        </div>
+    }
+    <div class="box-header">
+    </div>
     <div class="box-body">
-        
-        <!-- Tìm kiếm, hiển thị và chọn hàng đưa vào giỏ -->
         <div class="col-md-4">
-            <h4>Lựa chọn hàng cần bán</h4>
-            <form action="~/Admin/Order/SearchProducts" method="post">
+            <form id="formSearchInput" action="~/Admin/Order/SearchProducts" method="get">
+               
+
                 <div class="input-group">
                     <input type="text" name="searchValue"
                            class="form-control"
@@ -20,52 +35,11 @@
                     </span>
                 </div>
             </form>
-            <div>
-                <!-- Danh sách mặt hàng tìm được-->
-                @for (int i = 1; i <= 5; i++)
-                {
-                    <form action="~/Admin/Order/AddToCart" method="post" style="background-color:#fff; border:1px solid #ccc; margin:5px 0px 5px 0px; padding:5px;">
-                        
-                        <div class="row">
-                            <div class="col-md-12">
-                                <strong>Laptop HP Gaming VICTUS 16 e1105AX R5 6600H (7C0T0PA)</strong>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <img class="img img-responsive img-bordered" src="~/Images/Products/samsung.jpg">
-                            </div>
-                            <div class="col-sm-9">
-                                <div class="form-group-sm">
-                                    <div class="row">
-                                        <div class="col-md-7">
-                                            <label>Giá bán:</label>
-                                            <input class="form-control" type="text" value="23,990,000" name="SalePrice" />
-                                        </div>
-                                        <div class="col-md-5">
-                                            <label>Số lượng:</label>
-                                            <input class="form-control" type="number" value="1" min="1" name="Quantity" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group-sm" style="margin-top:2px;">
-                                    <button type="submit" class="btn btn-sm btn-primary">
-                                        <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                }
-
-                <ul class="pager">
-                    <li class="previous"><a href="#"><i class="fa fa-backward"></i></a></li>
-                    <li class="next"><a href="#"><i class="fa fa-forward"></i></a></li>
-                </ul>
-
-            </div>
+            <div id="searchResult1"></div>
         </div>
-                
+
+
+
         <div class="col-md-8">
             <!-- Giỏ hàng -->
             <h4>Danh sách mặt hàng đã chọn</h4>
@@ -81,35 +55,47 @@
                         <th style="width:40px"></th>
                     </tr>
                 </thead>
-                <tbody>                    
-                        @for(int i = 1; i < 3; i++)
-                        {                            
+                <tbody>
+                    @if (Model.Count() == 0)
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center">Giỏ hàng trống</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in Model)
+                        {
+                            stt += 1;
+                            sumTotal += item.TotalPrice;
+
                             <tr>
-                                <td class="text-center">@i</td>
-                                <td>Laptop HP Gaming VICTUS 16 e1105AX R5 6600H (7C0T0PA)</td>
-                                <td class="text-center">Bộ</td>
-                                <td class="text-center">1</td>
-                                <td class="text-right">23,990,000</td>
-                                <td class="text-right">23,990,000</td>
+                                <td class="text-center">@stt</td>
+                                <td>@item.ProductName</td>
+                                <td class="text-center">@item.Unit</td>
+                                <td class="text-center">@item.Quantity</td>
+                                <td class="text-right">@string.Format("{0:N}", item.SalePrice)</td>
+                                <td class="text-right">@string.Format("{0:N}", item.TotalPrice)</td>
                                 <td class="text-right">
-                                    <a href="~/Admin/Order/RemoveFromCart" class="btn btn-xs btn-danger">
+                                    <a href="~/Admin/Order/RemoveFromCart/@item.ProductID" class="btn btn-xs btn-danger" onclick="return confirm('Loại mặt hàng [@item.ProductName] khỏi giỏ hàng?')">
                                         <i class="fa fa-minus"></i>
                                     </a>
                                 </td>
                             </tr>
-                        }                    
+                        }
+                    }
                 </tbody>
                 <tfoot>
                     <tr>
                         <th colspan="5" class="text-right">Tổng cộng:</th>
-                        <th class="text-right">71,970,000</th>
+                        <th class="text-right">@string.Format("{0:N}", sumTotal)</th>
                         <th></th>
                     </tr>
                 </tfoot>
             </table>
             <div class="text-right">
                 <a href="~/Admin/Order/ClearCart" class="btn btn-sm btn-danger" onclick="confirm('Có muốn xóa giỏ hàng không?')">
-                   <i class="fa fa-trash"></i> Xóa giỏ hàng
+                    <i class="fa fa-trash"></i> Xóa giỏ hàng
                 </a>
             </div>
 
@@ -119,29 +105,68 @@
                 <div class="form-group">
                     <div class="col-md-6">
                         <label>Khách hàng:</label>
-                        <select class="form-control" name="customerID">
-                            <option value="0">-- Chọn khách hàng --</option>
-                            <option value="1">Trần Nguyên Phong</option>
-                            <option value="2">Nguyễn Hoàng Hà</option>
-                            <option value="3">Nguyễn Ngọc Thủy</option>
+                        <select class="form-control" name="customerId">
+                            @foreach (var item in SelectListHelper.Customers())
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label>Nhân viên phụ trách:</label>
-                        <select class="form-control" name="employeeID">
-                            <option value="0">-- Chọn nhân viên --</option>
-                            <option value="1">Nguyễn Thị Trà My</option>
-                            <option value="2">Lê Trần Thanh Nhi</option>
-                            <option value="3">Hoàng Ngọc Hải Châu</option>
+                        <select class="form-control" name="employeeId">
+                            @foreach (var item in SelectListHelper.Employees())
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-12 text-right">
-                        <button type="submit" class="btn btn-sm btn-primary">Lập đơn hàng</button>                        
+                        <button type="submit" class="btn btn-sm btn-primary">Lập đơn hàng</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+    @section Scripts{
+        <script>
+            $(document).ready(function () {
+                // khi submit form search thì tìm kiếm từ trang 1
+                $("#formSearchInput").submit(function (e) {
+                    e.preventDefault();
+                    doSearch(1);
+                    return;
+                });
+                // khi trang này xong thì tìm kiếm theo trang đang lưu trong model
+                doSearch(1);
+            });
+
+
+            function doSearch(page) {
+                var url = $("#formSearchInput").prop("action");
+                var postData = $("#formSearchInput").serializeArray();
+                postData.push({ "name": "page", "value": page });
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: postData,
+                    error: function () {
+                        alert("Your request is not valid:");
+                    },
+                    success: function (data) {
+                        $("#searchResult1").html(data); // Corrected selector
+                    }
+                });
+
+                return;
+            }
+
+
+
+        </script>
+
+    }

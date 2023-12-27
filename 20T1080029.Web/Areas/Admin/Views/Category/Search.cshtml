@@ -1,0 +1,137 @@
+﻿@model SV20T1080029.Web.Models.PaginationSearchCategory
+@{
+    ViewBag.Title = "Danh sách loại hàng";
+    Layout = null;
+    int nextPage = Model.Page + 1;
+    int previousPage = Model.Page - 1;
+}
+<!--Danh sách nhà cung cấp-->
+<p style="padding:10px ; background-color:#fff; margin:0px">
+    Có <strong>@string.Format("{0:N0}" , Model.RowCount)</strong> loại hàng . Hiện đang ở trang <strong>@Model.Page</strong> trên tổng số <strong>@Model.PageCount</strong> trang
+</p>
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+
+    <div id="successAlert" class="box-body">
+        <div class="alert alert-warning" style=" margin-bottom: 0px">
+            <div class="row">
+                <div class="col-sm-11">
+                    @ViewBag.ErrorMessage
+                </div>
+
+                <div class="col-sm-1">
+                    <button type="button" class="close" onclick="closeAlert()" style="color:white "><i class="glyphicon glyphicon-remove"></i></button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+    <div id="successAlert" class="box-body">
+        <div class="alert alert-success" style=" margin-bottom: 0px">
+            <div class="row">
+                <div class="col-sm-11">
+                    @ViewBag.SuccessMessage
+                </div>
+
+                <div class="col-sm-1">
+                    <button type="button" class="close" onclick="closeAlert()" style="color:white ">×</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.AddSuccessMessage))
+{
+    <div id="successAlert" class="box-body">
+        <div class="alert alert-success" style=" margin-bottom: 0px">
+            <div class="row">
+                <div class="col-sm-11">
+                    @ViewBag.AddSuccessMessage
+                </div>
+
+                <div class="col-sm-1">
+                    <button type="button" class="close" onclick="closeAlert()" style="color:white ">×</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+}
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr class="bg-primary">
+                <th>Tên loại hàng</th>
+                <th> Mô tả</th>
+                <th style=" text-align:center ">Công cụ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Data)
+            {
+                <tr>
+
+                    <td>@item.CategoryName</td>
+                    <td>@item.Description</td>
+
+                    <td style="text-align:center ">
+                        <a href="~/Admin/Category/Edit/@item.CategoryID" class="btn btn-xs btn-info" title="Sửa mặt hàng">
+                            <i class=" fa fa-edit"></i>
+                        </a>
+                        <a href="~/Admin/Category/Delete/@item.CategoryID" class="btn btn-xs btn-danger" title="Xoá mặt hàng">
+                            <i class=" fa fa-remove"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<!--Phân trang-->
+<div class="text-center">
+    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+        <ul class="pagination">
+            @if (Model.Page > 1)
+            {
+                <li class="paginate_button previous" id="example2_previous">
+                    <a href="javascript:;" onclick="doSearch(@previousPage)" aria-controls="example2" data-dt-idx="0" tabindex="0">Trang trước</a>
+                </li>
+            }
+            @for (int i = 1; i <= Model.PageCount; i++)
+            {
+                if (i == Model.Page)
+                {
+                    <li class="paginate_button active">
+                        <a href="#" aria-controls="example2" data-dt-idx="@i" tabindex="0">@i</a>
+                    </li>
+                }
+                else if (i <= 4 || i > Model.PageCount - 4 || (i >= Model.Page - 2 && i <= Model.Page + 2))
+                {
+                    <li class="page_link">
+                        <a href="javascript:;" onclick="doSearch(@i)" aria-controls="example2" data-dt-idx="">@i</a>
+                    </li>
+                }
+                else if (i == Model.Page - 4 || i == Model.Page + 4)
+                {
+                    <li class="paginate_button">
+                        <a href="javascript:;" onclick="doSearch(@nextPage)" aria-controls="example2" data-dt-idx="" tabindex="0">Trang tiếp theo</a>
+                    </li>
+                }
+            }
+            @if (Model.Page < Model.PageCount)
+            {
+                <li class="paginate_button next" id="example2_next">
+                    <a href="~/Admin/Category?page=@(Model.Page + 1)&searchValue=@Model.SearchValue" aria-controls="example2" data-dt-idx="" tabindex="0">Next</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+ 

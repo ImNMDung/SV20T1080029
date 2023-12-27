@@ -1,0 +1,462 @@
+﻿/*@media only screen and (max-width: 456px) {
+    .single_catagory_area {
+        padding-left: 200px;
+        padding-bottom: 40px;
+    }
+}
+
+@media only screen and (min-width: 457px) and (max-width: 1860px) {
+    .single_catagory_area {
+        padding-left: 0;
+        padding-bottom: 0;
+        
+    }
+}
+
+section {
+    display: block;
+}
+
+.banner_main {
+    position: relative;
+}
+
+.highlight {
+    background-color: yellow;*/ /* Màu nền sáng khi được nhấn */
+/*}
+
+.box-header ul li:hover {
+    background-color: orange;*/ /* Màu nền sáng khi di chuột qua */
+    /*color: black;*/ /* Màu chữ đổi khi di chuột qua */
+    /* Thêm các thuộc tính CSS khác theo nhu cầu của bạn */
+/*}
+
+#tong-slide {
+    position: relative;
+}
+
+.form-slide {
+    display: flex;
+    justify-content: space-between;*/ /* margin-top: 16px; */
+/*}
+
+.slideshow {
+    max-width: 885px;
+    margin-top: 15px;
+}
+
+.show-danhmuc {
+    width: 456px;
+    position: relative;
+    background: transparent;*/ /* padding: 0px 0 10px 0px; */
+/*}
+
+    .show-danhmuc ul.ul_cap2 {
+        position: absolute;
+        width: 100%;
+        left: 100%;
+        top: 0px;
+        transition: 0.4s;
+        background: #ffff !important;
+        width: 100%;
+        height: auto;
+        opacity: 0;
+        visibility: hidden;
+        z-index: -1;
+        overflow: unset;
+        border-radius: 0;
+    }
+
+    .show-danhmuc ul {
+        list-style: none;
+        margin: 0;
+        max-height: 450px;
+        overflow-y: auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 1px 1px 3px #e2e2e2;
+        padding: 10px 0 0;
+    }
+
+.sub-menu li {
+    padding: 0 5px;
+}
+
+.show-danhmuc ul li a {
+    font-weight: 500;
+    color: #000;
+    font-size: 14px;
+    padding: 10px 0px 10px 0px;
+    max-width: 200px;
+}
+
+    .show-danhmuc ul li a:hover {
+        color: #c78916;
+    }
+
+.show-danhmuc i {
+    position: absolute;
+    right: 5%;
+    font-size: 18px;
+    transform: translateY(2px);
+    opacity: 0.7;
+}
+
+.show-danhmuc ul li.cap1:hover ul.ul_cap2 {
+    opacity: 1;
+    visibility: visible;
+    z-index: 9;
+}
+
+.show-danhmuc ul li a.active, .show-danhmuc ul li:hover > a {
+    color: #000;
+}
+
+.show-danhmuc ul.ul_cap2 li:last-child {
+    margin-right: 0px;
+}
+
+.show-danhmuc ul li ul li ul li {
+    padding-top: 10px;
+}
+
+.show-danhmuc > ul {
+    min-height: 361px;
+}
+
+    .show-danhmuc > ul::-webkit-scrollbar {
+        background: #f2f4f3;
+        width: 6px;
+        height: single_catagory_areapx;
+    }
+
+    .show-danhmuc > ul::-webkit-scrollbar-thumb {
+        background: #F58426;
+    }
+
+.show-danhmuc ul li:hover > ul::after {
+    position: absolute;
+    content: "";
+    width: 20px;
+    height: 100%;
+    background: transparent;
+    top: 15px;
+    left: -10px;
+}
+
+.show-danhmuc ul li > ul::-webkit-scrollbar {
+    background: #f2f4f3;
+    width: 6px;
+}
+
+.show-danhmuc ul li > ul::-webkit-scrollbar-thumb {
+    background: #F58426;
+}
+
+.show-danhmuc ul li {
+    padding: 8px 5px 8px 40px;
+}
+
+    .show-danhmuc ul li ul li {
+        border-bottom: 1px solid#e2e2e2;
+        height: 50px;
+        display: flex;
+        align-items: center;
+    }
+
+    .show-danhmuc ul li a img {
+        padding-right: 10px;
+    }
+
+    .show-danhmuc ul li:hover {
+        background: #ef5a00;
+    }
+
+    .show-danhmuc ul li a:hover > img {
+        filter: invert(1);
+    }
+
+    .show-danhmuc ul li:hover > a {
+        color: #fff;
+    }
+
+#formrs {
+    padding-left: 10px;
+}*/
+
+
+
+
+
+    /* ####################################################
+    :: Template Name: Essence - Fashion Ecommerce Template
+    :: Author: Colorlib
+
+    :: Description: Essence is smart & elegant fashion e-commerce Template. It's suitable for all e-commerce business platform.
+    :: Version: 1.0.0
+    :: Created: April 27, 2018
+    :: Last Updated: May 2, 2018
+    #################################################### */
+
+    /* ---------------------------------------
+    ##### - PLACE YOUR CUSTOM CSS HERE - #####
+    --------------------------------------- */
+
+    /*.container1 {
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto
+    }
+    
+    @media (min-width: 576px) {
+        .container1 {
+            max-width:540px
+        }
+    }
+    
+    @media (min-width: 768px) {
+        .container1 {
+            max-width:720px
+        }
+    }
+    
+    @media (min-width: 992px) {
+        .container1 {
+            max-width:960px
+        }
+    }
+    
+    @media (min-width: 1200px) {
+        .container1 {
+            max-width:1920px
+        }
+    }*/
+
+
+@media only screen and (max-width: 456px) {
+    .single_catagory_area {
+        padding-left: 200px;
+        padding-bottom: 40px;
+    }
+}
+
+@media only screen and (min-width: 457px) and (max-width: 1860px) {
+    .single_catagory_area {
+        padding-left: 0;
+        padding-bottom: 0;
+    }
+}
+
+section {
+    display: block;
+}
+
+.banner_main {
+    position: relative;
+}
+
+.highlight {
+    background-color: yellow;
+    /* Màu nền sáng khi được nhấn */
+}
+
+.box-header ul li:hover {
+    background-color: orange;
+    /* Màu nền sáng khi di chuột qua */
+    color: black;
+    /* Màu chữ đổi khi di chuột qua */
+    /* Thêm các thuộc tính CSS khác theo nhu cầu của bạn */
+}
+
+#tong-slide {
+    position: relative;
+}
+
+.form-slide {
+    display: flex;
+    justify-content: space-between;
+    /* margin-top: 16px;
+	 */
+}
+
+.slideshow {
+    max-width: 885px;
+    margin-top: 15px;
+}
+
+.show-danhmuc {
+    width: 456px;
+    position: relative;
+    background: transparent;
+    /* padding: 0px 0 10px 0px;
+	 */
+}
+
+    .show-danhmuc ul.ul_cap2 {
+        position: absolute;
+        width: 100%;
+        left: 100%;
+        top: 0px;
+        transition: 0.4s;
+        background: #ffff !important;
+        width: 100%;
+        height: auto;
+        opacity: 0;
+        visibility: hidden;
+        z-index: -1;
+        overflow: unset;
+        border-radius: 0;
+    }
+
+    .show-danhmuc ul {
+        list-style: none;
+        margin: 0;
+        max-height: 450px;
+        overflow-y: auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 1px 1px 3px #e2e2e2;
+        padding: 10px 0 0;
+    }
+
+.sub-menu li {
+    padding: 0 5px;
+}
+
+.show-danhmuc ul li a {
+    font-weight: 500;
+    color: #000;
+    font-size: 14px;
+    padding: 10px 0px 10px 0px;
+    max-width: 200px;
+}
+
+    .show-danhmuc ul li a:hover {
+        color: #c78916;
+    }
+
+.show-danhmuc i {
+    position: absolute;
+    right: 5%;
+    font-size: 18px;
+    transform: translateY(2px);
+    opacity: 0.7;
+}
+
+.show-danhmuc ul li.cap1:hover ul.ul_cap2 {
+    opacity: 1;
+    visibility: visible;
+    z-index: 9;
+}
+
+.show-danhmuc ul li a.active, .show-danhmuc ul li:hover > a {
+    color: #000;
+}
+
+.show-danhmuc ul.ul_cap2 li:last-child {
+    margin-right: 0px;
+}
+
+.show-danhmuc ul li ul li ul li {
+    padding-top: 10px;
+}
+
+.show-danhmuc > ul {
+    min-height: 430px;
+}
+
+    .show-danhmuc > ul::-webkit-scrollbar {
+        background: #f2f4f3;
+        width: 6px;
+        height: single_catagory_areapx;
+    }
+
+    .show-danhmuc > ul::-webkit-scrollbar-thumb {
+        background: #f58426;
+    }
+
+.show-danhmuc ul li:hover > ul::after {
+    position: absolute;
+    content: "";
+    width: 20px;
+    height: 100%;
+    background: transparent;
+    top: 15px;
+    left: -10px;
+}
+
+.show-danhmuc ul li > ul::-webkit-scrollbar {
+    background: #f2f4f3;
+    width: 6px;
+}
+
+.show-danhmuc ul li > ul::-webkit-scrollbar-thumb {
+    background: #f58426;
+}
+
+.show-danhmuc ul li {
+    padding: 8px 5px 8px 40px;
+}
+
+    .show-danhmuc ul li ul li {
+        border-bottom: 1px solid #e2e2e2;
+        height: 50px;
+        display: flex;
+        align-items: center;
+    }
+
+    .show-danhmuc ul li a img {
+        padding-right: 10px;
+    }
+
+    .show-danhmuc ul li:hover {
+        background: #ef5a00;
+    }
+
+    .show-danhmuc ul li a:hover > img {
+        filter: invert(1);
+    }
+
+    .show-danhmuc ul li:hover > a {
+        color: #fff;
+    }
+
+#formrs {
+    padding-left: 10px;
+}
+/* #################################################### :: Template Name: Essence - Fashion Ecommerce Template :: Author: Colorlib :: Description: Essence is smart & elegant fashion e-commerce Template. It's suitable for all e-commerce business platform. :: Version: 1.0.0 :: Created: April 27, 2018 :: Last Updated: May 2, 2018 #################################################### */
+/* --------------------------------------- ##### - PLACE YOUR CUSTOM CSS HERE - ##### --------------------------------------- */
+.container1 {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (min-width: 576px) {
+    .container1 {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container1 {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container1 {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container1 {
+        max-width: 1920px;
+    }
+}
+ 

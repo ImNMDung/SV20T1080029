@@ -1,0 +1,30 @@
+﻿@using SV20T1080029.Web;
+@model SV20T1080029.Web.Models.DoubleView;
+@{
+    ViewData["Title"] = "Liên Hệ";
+}
+<div class="cart-bg-overlay"></div>
+
+
+
+<div class="contact-area d-flex align-items-center">
+
+    <div class="google-map">
+        <div id="googleMap"></div>
+    </div>
+
+    <div class="contact-info">
+        <h2> Liên hệ chúng tôi </h2>
+        <p></p>
+
+        <div class="contact-address mt-50">
+            <p><span>address:</span>   </p>
+            <p><span>telephone:</span> 0826356454  </p>
+            <p><a href="mailto:contact@essence.com"> </a></p>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwuyLRa1uKNtbgx6xAJVmWy-zADgegA2s"></script>
+<script src="~/js/map-active.js"></script>

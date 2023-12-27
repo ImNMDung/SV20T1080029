@@ -27,6 +27,11 @@ namespace SV20T1080029.Web.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private const string Product_Search = "Product_Search";
+
+        private const string Product_Data_Photo = "Product_Data_Photo";
+
+        private const string Product_Data_Attribute = "Product_Data_Attribute";
+
         public const int Page_Size = 10; // Tạo một biến hằng để đồng bộ thuộc tính cho trang web.
         /// <summary>
         /// 
@@ -61,7 +66,7 @@ namespace SV20T1080029.Web.Areas.Admin.Controllers
         {
 
             int rowCount = 0;
-            var data = ProductDataService.ListProducts( input.Page, input.PageSize, input.SearchValue ?? "", input.CategoryID, input.SupplierID, input.MinPrice, input.MaxPrice, out rowCount);
+            var data = ProductDataService.ListProducts(out rowCount, input.Page, input.PageSize, input.SearchValue ?? "", input.CategoryID, input.SupplierID, input.MinPrice, input.MaxPrice);
             var model = new PaginationSearchProductOutput()
             {
                 Page = input.Page,
@@ -73,8 +78,8 @@ namespace SV20T1080029.Web.Areas.Admin.Controllers
 
                 SupplierId = input.SupplierID,
 
-                MinPrice = input.MinPrice,
-                MaxPrice = input.MaxPrice
+                //MinPrice = input.MinPrice,
+                //MaxPrice = input.MaxPrice
             };
             ApplicationContext.SetSessionData(Product_Search, input);//lưu lại điều kiện tìm kiếm
 
@@ -99,14 +104,17 @@ namespace SV20T1080029.Web.Areas.Admin.Controllers
                 ProductId = 0
             };
             
+           
 
-         
+
             var data = new ViewProduct()
             {
                 Product = product,
                 ProductAttributes = null,
                 ProductPhotos = null
             };
+
+            ApplicationContext.SetSessionData(Product_Data_Photo, data);
             return View(data);
         }
         /// <summary>
@@ -134,7 +142,7 @@ namespace SV20T1080029.Web.Areas.Admin.Controllers
                 ProductPhotos = listPhotos
             };
             ViewBag.Title = "Cập nhật mặt hàng";
-            return View("Create",data);
+            return View(data);
         }
 
         public IActionResult Save(ViewProduct data, IFormFile? uploadPhoto)

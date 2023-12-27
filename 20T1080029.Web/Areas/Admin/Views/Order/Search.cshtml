@@ -1,6 +1,8 @@
 ﻿@model SV20T1080029.Web.Models.PaginationSearchOrder
 @{
     Layout = null;
+    int nextPage = Model.Page + 1;
+    int previousPage = Model.Page - 1;
 }
 <p style="margin-top: 10px; ">
     Có <strong>@Model.RowCount</strong> đơn hàng trong tổng số <strong>@Model.PageCount</strong> trang
@@ -51,7 +53,7 @@
             @if (Model.Page > 1)
             {
                 <li class="paginate_button previous" id="example2_previous">
-                    <a href="~/Admin/Product?page=@(Model.Page - 1)&searchValue=@Model.SearchValue" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
+                    <a href="javascript:;" onclick="doSearch(@previousPage)" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
                 </li>
             }
             @for (int i = 1; i <= Model.PageCount; i++)
@@ -65,7 +67,7 @@
                 else if (i <= 4 || i > Model.PageCount - 4 || (i >= Model.Page - 2 && i <= Model.Page + 2))
                 {
                     <li class="page_link">
-                        <a href="javascript:;" onclick="doSearch(@i)" aria-controls="example2" data-dt-idx="" tabindex="@i">@i</a>
+                        <a href="javascript:;" onclick="doSearch(@i)" aria-controls="example2" data-dt-idx="">@i</a>
                     </li>
                 }
                 else if (i == Model.Page - 4 || i == Model.Page + 4)
@@ -78,9 +80,11 @@
             @if (Model.Page < Model.PageCount)
             {
                 <li class="paginate_button next" id="example2_next">
-                    <a href="~/Admin/Product?page=@(Model.Page + 1)&searchValue=@Model.SearchValue" aria-controls="example2" data-dt-idx="" tabindex="0">Next</a>
+                    <a href="javascript:;" onclick="doSearch(@nextPage)" aria-controls="example2" data-dt-idx="" tabindex="0">Next</a>
                 </li>
             }
+
+          
         </ul>
     </div>
 </div>

@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using Azure;
+using Dapper;
 using Microsoft.Data.SqlClient;
 using SV20T1080029.DomainModels;
 using System;
@@ -54,10 +55,57 @@ namespace SV20T1080029.DataLayers.SQLServer
         public int Add(Order data, IEnumerable<OrderDetail> details)
         {
             int orderID = 0;
+            //Tạo đơn hàng mới trong CSDL
             using (var connection = OpenConnection())
             {
+                var sqlAddOrder = @"if exists(select * from Orders where OrderID = @OrderID)
+                                select -1
+                            else
+                                begin
 
-            }
+                                  INSERT INTO Orders(CustomerID, OrderTime, EmployeeID, AcceptTime, ShipperID, ShippedTime, FinishedTime, Status,DeliveryAddress,DeliveryProvince)
+                                         VALUES(@CustomerID, @OrderTime, @EmployeeID, @AcceptTime, @ShipperID, @ShippedTime, @FinishedTime, @Status,@DeliveryAddress,@DeliveryProvince);
+
+                                         SELECT @@identity;  
+                                end";
+                var parameters = new
+                {
+                    OrderID = data.OrderID,
+                    CustomerID = data.CustomerID,
+                    OrderTime = data.OrderTime,
+                    EmployeeID = data.EmployeeID,
+                    AcceptTime = data.AcceptTime,
+                    ShipperID = data.ShipperID,
+                    ShippedTime = data.ShippedTime,
+                    FinishedTime = data.FinishedTime,
+                    Status = data.Status,
+
+                    DeliveryAddress = data.DeliveryAddress,
+                    DeliveryProvince = data.DeliveryProvince
+
+
+
+
+                };
+                orderID = connection.ExecuteScalar<int>(sql: sqlAddOrder, param: parameters, commandType: CommandType.Text);
+                //Bổ sung chi tiết cho đơn hàng có mã là orderID
+
+                var sqlAddOrderDetail = @"INSERT INTO OrderDetails(OrderID, ProductID, Quantity, SalePrice) " +
+                                         "VALUES(@OrderID, @ProductID, @Quantity, @SalePrice)";
+                foreach (var item in details)
+                {
+                    var orderDetailsparameters = new
+                    {
+                        orderID = orderID,
+                        productID = item.ProductID,
+                        quantity = item.Quantity,
+                        salePrice = item.SalePrice,
+                    };
+                    connection.Execute(sqlAddOrderDetail, orderDetailsparameters);
+                }
+
+                connection.Close();
+            };
             return orderID;
         }
         /// <summary>
@@ -124,7 +172,19 @@ namespace SV20T1080029.DataLayers.SQLServer
             using (var connection = OpenConnection())
             {
                 var cmd = connection.CreateCommand();
-                cmd.CommandText = @"DELETE FROM OrderDetails WHERE OrderID = @OrderID AND ProductID = @ProductID";
+                cmd.CommandText = @"
+
+            if exists(select * from Customers where Email = @Email)
+                                            select -1
+                                        else
+                                            begin
+                                                insert into Customers(CustomerName,ContactName,Province,Address,Phone,Email,IsLocked)
+                                                values(@CustomerName,@ContactName,@Province,@Address,@Phone,@Email,@IsLocked);
+                                                select @@identity;
+                                            end""
+
+
+            DELETE FROM OrderDetails WHERE OrderID = @OrderID AND ProductID = @ProductID";
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.AddWithValue("@OrderID", orderID);
                 cmd.Parameters.AddWithValue("@ProductID", productID);
@@ -188,6 +248,24 @@ namespace SV20T1080029.DataLayers.SQLServer
             }
             return data;
         }
+
+
+        public IList<Order> ListStatus()
+        {
+            List<Order> data = new List<Order>();
+           
+            using (var connection = OpenConnection())
+            {
+                var sql = @"select * from OrderStatus";
+
+
+                data = connection.Query<Order>(sql: sql, commandType: CommandType.Text).ToList();
+
+                connection.Close();
+            }
+            return data;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -273,6 +351,45 @@ namespace SV20T1080029.DataLayers.SQLServer
         {
             int result = 0;
 
+
+            using (var connection = OpenConnection())
+            {
+                    var sql = @" 
+ 
+                        
+                    IF NOT EXISTS (SELECT 1 FROM OrderDetails WHERE OrderID = @OrderID AND ProductID = @ProductID)
+                    BEGIN
+   
+                        INSERT INTO OrderDetails (OrderID, ProductID, Quantity, SalePrice)
+                        VALUES (@OrderID, @ProductID, @Quantity, @SalePrice);
+
+                        SELECT SCOPE_IDENTITY() AS NewOrderDetailID;
+                    END
+                    ELSE
+                    BEGIN
+   
+                        UPDATE OrderDetails
+                        SET Quantity = @Quantity, SalePrice = @SalePrice
+                        WHERE OrderID = @OrderID AND ProductID = @ProductID;
+
+                        SELECT NULL AS NewOrderDetailID;
+                    END                        
+                    ";
+                var parameters = new
+                {
+                    OrderID = orderID,
+                    ProductID = productID,
+                    Quantity = quantity,
+                    SalePrice = salePrice
+                };
+
+                result = connection.ExecuteScalar<int>(sql: sql, param: parameters, commandType: CommandType.Text);
+
+
+                connection.Close();
+            }
+
+
             return result;
         }
         /// <summary>
@@ -321,5 +438,21 @@ namespace SV20T1080029.DataLayers.SQLServer
 
         
     }
+
+        public IList<Order> ListOrderStatus()
+        {
+            List<Order> data = new List<Order>();
+
+            using (var connection = OpenConnection())
+            {
+                var sql = @"select * from OrderStatus";
+
+
+                data = connection.Query<Order>(sql: sql, commandType: CommandType.Text).ToList();
+
+                connection.Close();
+            }
+            return data;
+        }
     }
 }

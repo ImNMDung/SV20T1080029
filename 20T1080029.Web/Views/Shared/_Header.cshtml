@@ -1,0 +1,65 @@
+﻿@using SV20T1080029.Web
+@model SV20T1080029.Web.Models.DoubleView
+
+<header class="header_area">
+    <div class="classy-nav-container breakpoint-off d-flex align-items-center justify-content-between">
+
+        <nav class="classy-navbar" id="essenceNav">
+
+            <a class="nav-brand" href="~/Home">
+                <img src="~/images/Logo/logo.png" alt="">
+            </a>
+
+            <div class="classy-navbar-toggler">
+                <span class="navbarToggler"><span></span><span></span><span></span></span>
+            </div>
+
+            <div class="classy-menu">
+                <div class="classycloseIcon">
+                    <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                </div>
+
+                <div class="classynav">
+                    <ul>
+                        <li>
+                            <a href="~/Home">Trang Chủ</a>
+                        </li>
+                        <li>
+                            <a href="~/Shop">Sản Phẩm</a>
+                            <div class="megamenu">
+                                @foreach (var item in SelectListHelper.Category())
+                                {
+                                    if (string.IsNullOrWhiteSpace(item.Value))
+                                    {
+                                        continue;
+                                    }
+                                    <ul class="single-mega cn-col-4">
+                                        <li class="title">
+                                            <a class="transition" title="@item.Value" href="~/Shop?CategoryId=@item.Value">
+                                                <span>@item.Text</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                }
+                            </div>
+                        </li>
+                        <li><a href="~/Contact">Liên hệ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="header-meta d-flex clearfix justify-content-end">
+            <div class="search-area">
+                <form action="~/Shop" method="get">
+                    <input type="search" name="searchValue" id="searchValue" placeholder="Nhập từ khoá tìm kiếm...">
+                    <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </form>
+            </div>
+
+            <div class="favourite-area" style="width: 250px;">
+                <a href="#" style="width: 250px;">Hotline Đặt Hàng: 0826356454</a>
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,197 @@
+﻿@using SV20T1080029.Web;
+@model SV20T1080029.Web.Models.DoubleView;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Shop";
+}
+
+
+<!-- ##### Right Side Cart End ##### -->
+<!-- ##### Breadcumb Area Start ##### -->
+<div class="breadcumb_area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="page-title text-center">
+                    <h2>Spotlighs.vn</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ##### Breadcumb Area End ##### -->
+<!-- ##### Shop Grid Area Start ##### -->
+<section class="shop_grid_area section-padding-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-3">
+                <div class="shop_sidebar_area">
+
+                    <!-- ##### Single Widget ##### -->
+                    <div class="widget catagory mb-50">
+                        <!-- Widget Title -->
+                        <h6 class="widget-title mb-30">Sản phẩm</h6>
+
+                        <!--  Catagories  -->
+                        <div class="catagories-menu">
+                            <ul id="menu-content2" class="menu-content collapse show">
+                                <!-- Single Item -->
+                                <li data-toggle="collapse" data-target="#clothing">
+
+                                    <ul class="sub-menu collapse show" id="clothing">
+
+
+                                        @foreach (var item in SelectListHelper.Category())
+                                        {
+                                            if (item.Value.ToString() == "")
+                                            {
+                                                continue;
+                                            }
+                                            <ul class="sub-menu collapse show" id="clothing">
+
+                                                <li class="title">
+                                                    <a class="" title="@item.Value" href="~/Shop?CategoryId=@item.Value"><span>@item.Text</span></a>
+                                                </li>
+
+                                            </ul>
+
+                                        }
+
+
+
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <div class="col-12 col-md-8 col-lg-9">
+                <div class="shop_grid_product_area">
+
+
+                    <div class="row">
+                        @foreach (var item in Model.data1!.Data)
+                        {
+                            <!-- Single Product -->
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <div class="single-product-wrapper">
+                                    <!-- Product Image -->
+                                    <div class="product-img">
+                                        <img src="~/images/products/@item.Photo" alt="">
+                                        <!-- Hover Thumb -->
+                                        <img class="hover-img" src="~/images/products/@item.Photo" alt="">
+
+                                        <!-- Product Badge -->
+                                        @*   <div class="product-badge offer-badge">
+                                    <span>-30%</span>
+                                    </div> *@
+                                        <!-- Favourite -->
+                                        <div class="product-favourite">
+                                            <a href="#" class="favme fa fa-heart"></a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Product Description -->
+                                    <div class="product-description">
+                                        <span>topshop</span>
+                                        <a href="/Shop/Details/@item.ProductId">
+                                            <h6>@item.ProductName</h6>
+                                        </a>
+                                        <p class="product-price" id="amount">
+
+                                            @*   <span class="old-price">$75.00</span> *@
+
+                                            @item.Price.ToString("N0") VNĐ
+                                        </p>
+
+                                        <!-- Hover Content -->
+                                        <div class="hover-content">
+                                            <!-- Add to Cart -->
+                                            <div class="add-to-cart-btn">
+                                                <a href="#" class="btn essence-btn">Liên Hệ</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- Single Product -->
+                        <!-- Single Product -->
+                        <!-- Single Product -->
+                        <!-- Single Product -->
+                        <!-- Single Product -->
+                        <!-- Single Product -->
+                        <!-- Single Product -->
+                        <!-- Single Product -->
+
+
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="text-center">
+                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                        <ul class="pagination  justify-content-center">
+                            @if (Model.Page > 1)
+                            {
+                                <li class="page-item previous" id="example2_previous">
+                                    <a class="page-link" href="~/Shop?page=@(Model.Page - 1)&searchValue=@Model.SearchValue" aria-controls="example2" data-dt-idx="0" tabindex="0"><i class="fa fa-angle-left"></i></a>
+                                </li>
+                            }
+                            @for (int i = 1; i <= Model.PageCount; i++)
+                            {
+                                if (i == Model.Page)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" style="background-color:#cbcbcb" href="#" aria-controls="example2" data-dt-idx="@i" tabindex="0">@i</a>
+                                    </li>
+                                }
+                                else if (i <= 4 || i > Model.PageCount - 4 || (i >= Model.Page - 2 && i <= Model.Page + 2))
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="~/Shop?page=@i&searchValue=@Model.SearchValue" aria-controls="example2" data-dt-idx="" tabindex="@i">@i</a>
+                                    </li>
+                                }
+                                else if (i == Model.Page - 4 || i == Model.Page + 4)
+                                {
+                                    <li class="page-item">
+                                        <a href="#" aria-controls="example2" data-dt-idx="" tabindex="0">...</a>
+                                    </li>
+                                }
+                            }
+                            @if (Model.Page < Model.PageCount)
+                            {
+                                <li class="page-item" id="example2_next">
+                                    <a class="page-link" href="~/Shop?page=@(Model.Page + 1)&searchValue=@Model.SearchValue" aria-controls="example2" data-dt-idx="" tabindex="0"><i class="fa fa-angle-right"></i></a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                @*
+                <nav aria-label="navigation">
+                <ul class="pagination mt-50 mb-70">
+
+                <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-left"></i></a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                <li class="page-item"><a class="page-link" href="#">21</a></li>
+                <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i></a></li>
+                </ul>
+                </nav> *@
+            </div>
+
+
+
+        </div>
+    </div>
+</section>

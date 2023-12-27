@@ -9,6 +9,9 @@ namespace SV20T1080029.DataLayers
 {
     public interface IOrderDAL
     {
+
+
+        IList<Order> ListOrderStatus();
         /// <summary>
         /// Tìm kiếm và lấy danh sách đơn hàng dưới dạng phân trang
         /// </summary>
